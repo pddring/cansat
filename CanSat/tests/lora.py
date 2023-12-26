@@ -1,36 +1,49 @@
-# Hardware: Raspberry pi pico on a pico explorer board
+# Hardware: Raspberry pi pico 
 #       433MHz RFM9x LORA => Pico
-# 					VIN	  => 3.3v
-#					GND	  => GND
-#					SCK   => SCLK (GP18)
-#					MISO  => MISO (GP16)
-#					MOSI  => MOSI (GP19)
-#                   CS    => GP2
-#                   RST   => GP3
+# 					VIN	  => 3.3v (36)
+#					GND	  => GND  (28)
+#					SCK   => GP26 (31)
+#					MISO  => GP28 (34)
+#					MOSI  => GP27 (32)
+#                   CS    => GP22 (29)
+#                   RST   => GP21 (27)
+#       Pico display => Pico (underneath, all pins)               
 # Firmware: CircuitPython 8
 # Tests: Displaying text on the screen
-# Success: Red text "CanSat test" at the top of the screen
-#  with a white triangle, a yellow circle and green and blue rectangles
+# Success: LoRa sends X,Y A or B when you press corresponding button
+#          RGB light should flash red on send
+#          If data received, message should appear on screen and led flash green
 
 import board
 import busio
-
-import picoexplorer as display
-
-spi_mosi = board.GP19
-spi_clk = board.GP18
-
-
-spi = display.spi
 import digitalio
 import adafruit_rfm9x
-cs_lora = digitalio.DigitalInOut(board.GP2)
+import picodisplay as display
+import time
+
+spi_mosi = board.GP27
+spi_clk = board.GP26
+spi_miso = board.GP28
+spi_lora = busio.SPI(spi_clk, MOSI=spi_mosi, MISO=spi_miso)
+cs_lora = digitalio.DigitalInOut(board.GP22)
 cs_lora.direction = digitalio.Direction.OUTPUT
 cs_lora.value = False
+reset_lora = digitalio.DigitalInOut(board.GP21)
+rfm9x = adafruit_rfm9x.RFM9x(spi_lora, cs_lora, reset_lora, 433.0, baudrate=1000000)
 
-cs_screen = digitalio.DigitalInOut(board.GP17)
-cs_screen.direction = digitalio.Direction.OUTPUT
-cs_screen.value = True
-reset = digitalio.DigitalInOut(board.GP3)
-rfm9x = adafruit_rfm9x.RFM9x(spi, cs_lora, reset, 433.0, baudrate=1000000)
-#rfm9x.send('Hello world!')
+title = display.text("LoRa", 0, 10, 0, 2)
+instructions = display.text("Press X,Y,A or B to send", 0, 30, 0, 1)
+rx = display.text("RX:", 0, 50, 0, 1)
+while True:
+    for b in ["X", "Y", "A", "B"]:
+        if display.buttons[b].value == False:
+            display.set_rgb(10, 0, 0)
+            title.text = "LoRa: " + b
+            rfm9x.send(b)
+    data = rfm9x.receive()
+    if data:
+        rx.text = "RX: {}".format(data)
+        display.set_rgb(0, 10, 0)
+    time.sleep(0.1)
+    display.set_rgb(0, 0, 0)
+    title.text = "LoRa"
