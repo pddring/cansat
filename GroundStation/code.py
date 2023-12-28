@@ -1,4 +1,4 @@
-# Hardware: Raspberry pi pico 
+# Hardware: Raspberry pi pico with pico display
 #       433MHz RFM9x LORA => Pico
 # 					VIN	  => 3.3v (36)
 #					GND	  => GND  (28)
@@ -34,7 +34,6 @@ display.rectangle(0, 0, 240, 135, 0x0000FF)
 display.rectangle(0, 0, 240, 20, 0xFFFFFF)
 text = "CanSat Receiver"
 text_title = display.text(text, 0, 10, 0, 2)
-text_rx = display.text("RX: ", 0, 30, 1, 1)
 text_acceleration = display.text("Acceleration:", 0, 80, 0, 1)
 text_magnetic = display.text("Magnetic:", 0, 100, 0, 1)
 labels = {
@@ -46,7 +45,14 @@ labels = {
     "AZ": display.text("Z: ", 170, 90, 0, 1),
     "MX": display.text("X: ", 10, 110, 0, 1),
     "MY": display.text("Y: ", 90, 110, 0, 1),
-    "MZ": display.text("Z: ", 170, 110, 0, 1)
+    "MZ": display.text("Z: ", 170, 110, 0, 1),
+    "Batt": display.text("Battery: ", 0, 120, 0, 1),
+    "Char": display.text("Charging: ", 120, 120, 0, 1),
+    "Fix": display.text("Fix: ", 0, 30, 0, 1),
+    "3D": display.text("3D: ", 100, 30, 0, 1),
+    "Sat": display.text("Sat: ", 200, 30, 0, 1),
+    "Lat": display.text("Lat: ", 0, 40, 0, 1),
+    "Lng": display.text("Lng: ", 100, 40, 0, 1)
     }
 display.set_rgb(0, 0, 0)
 
@@ -85,12 +91,12 @@ while True:
     data = rfm9x.receive()
     
     if data:
-        text_rx.text = "RX: {}".format(data)
         display.set_rgb(0, 10, 0)
         values = process_data(data)
         for label in values:
             if label in labels:
                 labels[label].text = "{}: {}".format(label, values[label])
+                
             else:
                 print("Unknown value:", label, values[label])
     else:

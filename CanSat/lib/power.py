@@ -17,4 +17,4 @@ class Power:
         return self.charging.value
     
     def getVoltage(self):
-        return self.vsys.value * self.vsys.reference_voltage / 65535 * 3
+        return self.vsys.value * self.vsys.reference_voltage / 65535 * 2.938
