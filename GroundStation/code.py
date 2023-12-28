@@ -95,8 +95,9 @@ while True:
         values = process_data(data)
         for label in values:
             if label in labels:
-                labels[label].text = "{}: {}".format(label, values[label])
-                
+                msg = "{}: {}".format(label, values[label])
+                labels[label].text = msg
+                print(msg)
             else:
                 print("Unknown value:", label, values[label])
     else:

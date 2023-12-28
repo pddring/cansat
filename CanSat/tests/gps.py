@@ -2,8 +2,8 @@
 #   Ultimate GPS breakout => Pico
 # 					VIN	  => 3.3v
 #					GND	  => GND
-#					RX    => GP0
-#					TX	  => GP1
+#					RX    => UART TX: GP0 (1)
+#					TX	  => UART RX: GP1 (2)
 # Firmware: CircuitPython 8
 # Tests: Displays GPS stats on screen
 # Success: GPS status (red no fix, green fix found). Satellite count, time, pos and altitude
@@ -25,7 +25,7 @@ gps.send_command(b"PMTK220,1000")
 
 # Main loop runs forever printing data as it comes in
 timestamp = time.monotonic()
-print("Connecting to GPS...", 0, 10, 0, 1)
+print("Connecting to GPS...")
 while True:
     gps.update()
     print("Fix: {} 3D: {} Satellites: {}".format(gps.fix_quality,
