@@ -7,19 +7,18 @@
 #					MOSI  => GP27 (32)
 #                   CS    => GP22 (29)
 #                   RST   => GP21 (27)
-#       Pico display => Pico (underneath, all pins)               
 # Firmware: CircuitPython 8
 # Tests: Displaying text on the screen
 # Success: LoRa sends X,Y A or B when you press corresponding button
 #          RGB light should flash red on send
 #          If data received, message should appear on screen and led flash green
-
+import re
 import board
 import busio
-import digitalio
 import adafruit_rfm9x
-import picodisplay as display
 import time
+import digitalio
+import picodisplay as display
 
 spi_mosi = board.GP27
 spi_clk = board.GP26
@@ -30,20 +29,60 @@ cs_lora.direction = digitalio.Direction.OUTPUT
 cs_lora.value = False
 reset_lora = digitalio.DigitalInOut(board.GP21)
 rfm9x = adafruit_rfm9x.RFM9x(spi_lora, cs_lora, reset_lora, 433.0, baudrate=1000000)
+print("Started")
+display.rectangle(0, 0, 240, 135, 0x0000FF)
+display.rectangle(0, 0, 240, 20, 0xFFFFFF)
+text = "CanSat Receiver"
+text_title = display.text(text, 0, 10, 0, 2)
+text_rx = display.text("RX: ", 0, 30, 1, 1)
 
-title = display.text("LoRa", 0, 10, 0, 2)
-instructions = display.text("Press X,Y,A or B to send", 0, 30, 0, 1)
-rx = display.text("RX:", 0, 50, 0, 1)
+labels = {
+    "Temp": display.text("Temperature: ", 0, 50, 0, 1),
+    "Press": display.text("Pressure: ", 0, 60, 0, 1),
+    "Alt": display.text("Altitude: ", 0, 70, 0, 1)
+    }
+display.set_rgb(0, 0, 0)
+
+# convert a bytearray received from LoRa to a dictionary of values
+# byte array must be a string formatted like this: "Temp:10.4 Alt: 34.2 "
+# notice the colon before the value and the space after it
+def process_data(rx):
+    s = ""
+    label = ""
+    values = {}
+    for b in rx:
+        c = chr(b)
+        s += c
+        if c == ":":
+            label = s[0:-1]
+            s = ""
+        if c == " ":
+            try:
+                value = float(s)
+                values[label] = value
+                s = ""
+            except:
+                print("Could not read", label)
+    return values
+        
 while True:
-    for b in ["X", "Y", "A", "B"]:
+    text = "CanSat Receiver: "
+    for b in display.buttons:
         if display.buttons[b].value == False:
+            text += b
             display.set_rgb(10, 0, 0)
-            title.text = "LoRa: " + b
             rfm9x.send(b)
+            display.set_rgb(0, 0, 0)
+            
+    text_title.text = text
     data = rfm9x.receive()
+    
     if data:
-        rx.text = "RX: {}".format(data)
+        text_rx.text = "RX: {}".format(data)
         display.set_rgb(0, 10, 0)
-    time.sleep(0.1)
-    display.set_rgb(0, 0, 0)
-    title.text = "LoRa"
+        #print(data)
+        values = process_data(data)
+        for label in values:
+            labels[label].text = "{}: {}".format(label, values[label])
+    else:
+        display.set_rgb(0, 0, 0)
