@@ -12,7 +12,7 @@
 # Success: LoRa sends X,Y A or B when you press corresponding button
 #          RGB light should flash red on send
 #          If data received, message should appear on screen and led flash green
-import re
+
 import board
 import busio
 import adafruit_rfm9x
@@ -32,7 +32,7 @@ rfm9x = adafruit_rfm9x.RFM9x(spi_lora, cs_lora, reset_lora, 433.0, baudrate=1000
 print("Started")
 display.rectangle(0, 0, 240, 135, 0x0000FF)
 display.rectangle(0, 0, 240, 20, 0xFFFFFF)
-text = "CanSat Receiver"
+text = "CanSat:"
 text_title = display.text(text, 0, 10, 0, 2)
 text_acceleration = display.text("Acceleration:", 0, 80, 0, 1)
 text_magnetic = display.text("Magnetic:", 0, 100, 0, 1)
@@ -52,7 +52,8 @@ labels = {
     "3D": display.text("3D: ", 100, 30, 0, 1),
     "Sat": display.text("Sat: ", 200, 30, 0, 1),
     "Lat": display.text("Lat: ", 0, 40, 0, 1),
-    "Lng": display.text("Lng: ", 100, 40, 0, 1)
+    "Lng": display.text("Lng: ", 100, 40, 0, 1),
+    "P": display.text("P: 0", 140, 10, 0, 2)
     }
 display.set_rgb(0, 0, 0)
 
@@ -79,7 +80,7 @@ def process_data(rx):
     return values
         
 while True:
-    text = "CanSat Receiver: "
+    text = "CanSat: "
     for b in display.buttons:
         if display.buttons[b].value == False:
             text += b

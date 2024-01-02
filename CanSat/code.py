@@ -54,13 +54,15 @@ PINS_BMP280 = {"sda": board.GP18, "scl": board.GP19}
 i2c = busio.I2C(**PINS_BMP280)
 sensor = adafruit_bmp280.Adafruit_BMP280_I2C(i2c, address=118)
 
+# replace with local ground altitude
+sensor.altitude = 110
+
 # set up Inertial Measurement Unit
 from adafruit_bno08x.i2c import BNO08X_I2C
 from adafruit_bno08x import BNO_REPORT_ACCELEROMETER, BNO_REPORT_MAGNETOMETER
 imu = BNO08X_I2C(i2c)
 imu.enable_feature(BNO_REPORT_ACCELEROMETER)
 imu.enable_feature(BNO_REPORT_MAGNETOMETER)
-
 
 # set up LoRa
 cs_lora = digitalio.DigitalInOut(board.GP22)
@@ -77,45 +79,58 @@ led = digitalio.DigitalInOut(board.LED)
 led.direction = digitalio.Direction.OUTPUT
 led.value = True
 gps.satellites = 0
+packet_count = 1
+
 while True:
     gps.update()
-    msg = "Fix:{} 3D:{} Sat:{} ".format(gps.fix_quality,
-                                        gps.fix_quality_3d,
-                                        gps.satellites)
+    msg = "Fix:{} 3D:{} Sat:{} P:{} ".format(gps.fix_quality,
+                                             gps.fix_quality_3d,
+                                             gps.satellites,
+                                             packet_count)
     print(msg)
     rfm9x.send(msg)
+    packet_count += 1
     time.sleep(0.1)
     
     if gps.fix_quality > 0:
-        msg = "Lat:{} Lng:{} GPSAlt:{} ".format(gps.latitude,
-                                              gps.longitude,
-                                              gps.altitude_m)
+        msg = "Lat:{} Lng:{} GPSAlt:{} P:{} ".format(gps.latitude,
+                                                     gps.longitude,
+                                                     gps.altitude_m,
+                                                     packet_count)
         print(msg)
         rfm9x.send(msg)
+        packet_count += 1
     time.sleep(0.1)
     
-    msg = "Temp:{:.2f} Press:{:.2f} Alt:{:.2f} ".format(sensor.temperature, sensor.pressure, sensor.altitude)
+    msg = "Temp:{:.2f} Press:{:.2f} Alt:{:.2f} P:{} ".format(sensor.temperature,
+                                                            sensor.pressure,
+                                                            sensor.altitude,
+                                                            packet_count)
     print(msg)
     rfm9x.send(msg)
+    packet_count += 1
     time.sleep(0.1)
     
     ax,ay,az = imu.acceleration
-    msg = "AX:{:.3f} AY:{:.3f} AZ:{:.3f} ".format(ax, ay, az)
+    msg = "AX:{:.3f} AY:{:.3f} AZ:{:.3f} P:{} ".format(ax, ay, az, packet_count)
     print(msg)
     rfm9x.send(msg)
+    packet_count += 1
     time.sleep(0.1)
     
     mx,my,mz = imu.magnetic
-    msg = "MX:{:.3f} MY:{:.3f} MZ:{:.3f} ".format(mx, my, mz)
+    msg = "MX:{:.3f} MY:{:.3f} MZ:{:.3f} P:{} ".format(mx, my, mz, packet_count)
     print(msg)
     rfm9x.send(msg)
+    packet_count += 1
     time.sleep(0.1)
     
     charging = 0
     if p.isCharging():
         charging = 1
-    msg = "Batt:{} Char:{} ".format(p.getVoltage(), charging)
+    msg = "Batt:{} Char:{} P:{} ".format(p.getVoltage(), charging, packet_count)
     rfm9x.send(msg)
+    packet_count += 1
     print(msg)
     
     time.sleep(0.5)
