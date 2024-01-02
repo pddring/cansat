@@ -1,15 +1,15 @@
 # Hardware: Raspberry pi pico 
 #  BMP280 pressure sensor => Pico
-# 					VIN	  => 3.3v
-#					GND	  => GND
-#				    SDA   => SDA (GP18)
-#					SCL	  => SCL (GP19)
+#                   VIN   => 3.3v
+#                   GND   => GND
+#                   SDA   => SDA (GP18)
+#                   SCL   => SCL (GP19)
 #       433MHz RFM9x LORA => Pico
-# 					VIN	  => 3.3v (36)
-#					GND	  => GND  (28)
-#					SCK   => GP26 (31)
-#					MISO  => GP28 (34)
-#					MOSI  => GP27 (32)
+#                   VIN   => 3.3v (36)
+#                   GND   => GND  (28)
+#                   SCK   => GP26 (31)
+#                   MISO  => GP28 (34)
+#                   MOSI  => GP27 (32)
 #                   CS    => GP22 (29)
 #                   RST   => GP21 (27)
 
@@ -28,6 +28,9 @@ import adafruit_rfm9x
 PINS_BMP280 = {"sda": board.GP18, "scl": board.GP19}
 i2c = busio.I2C(**PINS_BMP280)
 sensor = adafruit_bmp280.Adafruit_BMP280_I2C(i2c, address=118)
+
+# replace with known ground altitude
+sensor.altitude = 110
 
 # set up LoRa
 cs_lora = digitalio.DigitalInOut(board.GP22)
