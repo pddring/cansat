@@ -1,10 +1,10 @@
 # Hardware: Raspberry pi pico with pico display
 #       433MHz RFM9x LORA => Pico
-# 					VIN	  => 3.3v (36)
-#					GND	  => GND  (28)
-#					SCK   => GP26 (31)
-#					MISO  => GP28 (34)
-#					MOSI  => GP27 (32)
+#                   VIN   => 3.3v (36)
+#                   GND   => GND  (28)
+#                   SCK   => GP26 (31)
+#                   MISO  => GP28 (34)
+#                   MOSI  => GP27 (32)
 #                   CS    => GP22 (29)
 #                   RST   => GP21 (27)
 # Firmware: CircuitPython 8
@@ -19,6 +19,9 @@ import adafruit_rfm9x
 import time
 import digitalio
 import picodisplay as display
+import logger
+log = logger.LogWriter(debug=True)
+recording = False
 
 spi_mosi = board.GP27
 spi_clk = board.GP26
@@ -78,11 +81,21 @@ def process_data(rx):
             except:
                 print("Could not read", label)
     return values
-        
+
 while True:
     text = "CanSat: "
+    if recording:
+        text += "[R]"
+    else:
+        text += "[ ]"
     for b in display.buttons:
         if display.buttons[b].value == False:
+            if b == "X":
+                recording = not recording
+                if recording:
+                    log.start()
+                else:
+                    log.stop()
             text += b
             display.set_rgb(10, 0, 0)
             rfm9x.send(b)
@@ -94,6 +107,8 @@ while True:
     if data:
         display.set_rgb(0, 10, 0)
         values = process_data(data)
+        if recording:
+            log.write(values)
         for label in values:
             if label in labels:
                 msg = "{}: {}".format(label, values[label])
