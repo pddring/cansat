@@ -20,7 +20,7 @@ import time
 import digitalio
 import picodisplay as display
 import logger
-log = logger.LogWriter(debug=True)
+log = logger.LogWriter()
 recording = False
 
 spi_mosi = board.GP27
