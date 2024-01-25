@@ -56,6 +56,25 @@ class LogWriter:
                 self.files[file].close()
                 self.files[file] = None
                 
+    def process_values(self, msg):  
+        s = ""
+        label = ""
+        values = {}
+        for b in msg:
+            c = chr(b)
+            s += c
+            if c == ":":
+                label = s[0:-1]
+                s = ""
+            if c == " ":
+                try:
+                    value = float(s)
+                    values[label] = value
+                    s = ""
+                except:
+                    print("Could not read", label)
+        return values
+                
 if __name__ == "__main__":
     log = LogWriter()
     log.start()

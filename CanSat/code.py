@@ -36,6 +36,8 @@ import digitalio
 import adafruit_rfm9x
 import power
 import adafruit_gps
+import logger
+log = logger.LogWriter()
 
 # set up GPS
 uart = busio.UART(board.GP0, board.GP1, baudrate=9600, timeout=30)
@@ -80,17 +82,30 @@ led.direction = digitalio.Direction.OUTPUT
 led.value = True
 gps.satellites = 0
 packet_count = 1
+recording = 0
 
 while True:
+    data = rfm9x.receive()
+    if data:
+        if data == "B":
+            log.start()
+            recording = 1
+        if data == "A":
+            log.stop()
+            recording = 0
     gps.update()
-    msg = "Fix:{} 3D:{} Sat:{} P:{} ".format(gps.fix_quality,
+    msg = "Fix:{} 3D:{} Sat:{} P:{} R:{} ".format(gps.fix_quality,
                                              gps.fix_quality_3d,
                                              gps.satellites,
-                                             packet_count)
+                                             packet_count,
+                                             recording)
     print(msg)
     rfm9x.send(msg)
+    if recording:
+        data = log.process_values(bytearray(msg))
+        log.write(data)
     packet_count += 1
-    time.sleep(0.1)
+    time.sleep(0.01)
     
     if gps.fix_quality > 0:
         msg = "Lat:{} Lng:{} GPSAlt:{} P:{} ".format(gps.latitude,
@@ -100,7 +115,7 @@ while True:
         print(msg)
         rfm9x.send(msg)
         packet_count += 1
-    time.sleep(0.1)
+    time.sleep(0.01)
     
     msg = "Temp:{:.2f} Press:{:.2f} Alt:{:.2f} P:{} ".format(sensor.temperature,
                                                             sensor.pressure,
@@ -109,21 +124,21 @@ while True:
     print(msg)
     rfm9x.send(msg)
     packet_count += 1
-    time.sleep(0.1)
+    time.sleep(0.01)
     
     ax,ay,az = imu.acceleration
     msg = "AX:{:.3f} AY:{:.3f} AZ:{:.3f} P:{} ".format(ax, ay, az, packet_count)
     print(msg)
     rfm9x.send(msg)
     packet_count += 1
-    time.sleep(0.1)
+    time.sleep(0.01)
     
     mx,my,mz = imu.magnetic
     msg = "MX:{:.3f} MY:{:.3f} MZ:{:.3f} P:{} ".format(mx, my, mz, packet_count)
     print(msg)
     rfm9x.send(msg)
     packet_count += 1
-    time.sleep(0.1)
+    time.sleep(0.01)
     
     charging = 0
     if p.isCharging():
@@ -133,7 +148,7 @@ while True:
     packet_count += 1
     print(msg)
     
-    time.sleep(0.5)
+    time.sleep(0.01)
     led.value = not led.value
 
 
