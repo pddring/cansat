@@ -20,8 +20,9 @@ import time
 import digitalio
 import picodisplay as display
 import logger
-log = logger.LogWriter()
-recording = False
+log = logger.LogWriter(debug=True)
+recordingLocal = False
+recordingRemote = False
 
 spi_mosi = board.GP27
 spi_clk = board.GP26
@@ -56,46 +57,30 @@ labels = {
     "Sat": display.text("Sat: ", 200, 30, 0, 1),
     "Lat": display.text("Lat: ", 0, 40, 0, 1),
     "Lng": display.text("Lng: ", 100, 40, 0, 1),
-    "P": display.text("P: 0", 140, 10, 0, 2)
+    "P": display.text("P: 0", 140, 5, 0, 1),
+    "T": display.text("T: 0", 140, 15, 0, 1)
     }
 display.set_rgb(0, 0, 0)
 
-# convert a bytearray received from LoRa to a dictionary of values
-# byte array must be a string formatted like this: "Temp:10.4 Alt: 34.2 "
-# notice the colon before the value and the space after it
-def process_data(rx):
-    s = ""
-    label = ""
-    values = {}
-    for b in rx:
-        c = chr(b)
-        s += c
-        if c == ":":
-            label = s[0:-1]
-            s = ""
-        if c == " ":
-            try:
-                value = float(s)
-                values[label] = value
-                s = ""
-            except:
-                print("Could not read", label)
-    return values
-
 while True:
-    text = "CanSat: "
-    if recording:
-        text += "[R]"
+    text = "CanSat:["
+    if recordingLocal:
+        text += "L"
     else:
-        text += "[ ]"
+        text += "!"
+    if recordingRemote:
+        text += "R"
+    else:
+        text += "!"
+    text += "]"
     for b in display.buttons:
         if display.buttons[b].value == False:
-            if b == "X":
-                recording = not recording
-                if recording:
-                    log.start()
-                else:
-                    log.stop()
+            if b == "Y":
+                recordingLocal = True
+                log.start()
+            elif b == "X":
+                recordingLocal = False
+                log.stop()
             text += b
             display.set_rgb(10, 0, 0)
             rfm9x.send(b)
@@ -106,8 +91,8 @@ while True:
     
     if data:
         display.set_rgb(0, 10, 0)
-        values = process_data(data)
-        if recording:
+        values = log.process_values(data)
+        if recordingLocal:
             log.write(values)
         for label in values:
             if label in labels:
@@ -115,6 +100,11 @@ while True:
                 labels[label].text = msg
                 print(msg)
             else:
-                print("Unknown value:", label, values[label])
+                if label == "R":
+                    recordingRemote = values[label]
+                    msg = "{}: {}".format(label, values[label])
+                    print(msg)
+                else:
+                    print("Unknown value:", label, values[label])
     else:
         display.set_rgb(0, 0, 0)

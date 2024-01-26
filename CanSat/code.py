@@ -57,7 +57,7 @@ i2c = busio.I2C(**PINS_BMP280)
 sensor = adafruit_bmp280.Adafruit_BMP280_I2C(i2c, address=118)
 
 # replace with local ground altitude
-sensor.altitude = 110
+sensor.altitude = 0
 
 # set up Inertial Measurement Unit
 from adafruit_bno08x.i2c import BNO08X_I2C
@@ -76,6 +76,7 @@ spi_clk = board.GP26
 spi_miso = board.GP28
 spi_lora = busio.SPI(spi_clk, MOSI=spi_mosi, MISO=spi_miso)
 rfm9x = adafruit_rfm9x.RFM9x(spi_lora, cs_lora, reset_lora, 433.0, baudrate=1000000)
+rfm9x.tx_power = 23
 
 led = digitalio.DigitalInOut(board.LED)
 led.direction = digitalio.Direction.OUTPUT
@@ -94,11 +95,42 @@ while True:
             log.stop()
             recording = 0
     gps.update()
-    msg = "Fix:{} 3D:{} Sat:{} P:{} R:{} ".format(gps.fix_quality,
+    msg = "Fix:{} 3D:{} Sat:{} P:{} R:{} T:{} ".format(gps.fix_quality,
                                              gps.fix_quality_3d,
                                              gps.satellites,
                                              packet_count,
-                                             recording)
+                                             recording,
+                                             time.monotonic())
+    print(msg)
+    rfm9x.send(msg)
+    
+    if recording:
+        data = log.process_values(bytearray(msg))
+        log.write(data)
+    packet_count += 1
+    time.sleep(0.01)
+    
+    if gps.fix_quality > 0:
+        msg = "Lat:{} Lng:{} GPSAlt:{} P:{} R:{} T:{} ".format(gps.latitude,
+                                                     gps.longitude,
+                                                     gps.altitude_m,
+                                                     packet_count,
+                                                     recording,
+                                                     time.monotonic())
+        print(msg)
+        rfm9x.send(msg)
+        if recording:
+            data = log.process_values(bytearray(msg))
+            log.write(data)
+        packet_count += 1
+    time.sleep(0.01)
+    
+    msg = "Temp:{:.2f} Press:{:.2f} Alt:{:.2f} P:{} R:{} T:{} ".format(sensor.temperature,
+                                                            sensor.pressure,
+                                                            sensor.altitude,
+                                                            packet_count,
+                                                            recording,
+                                                            time.monotonic())
     print(msg)
     rfm9x.send(msg)
     if recording:
@@ -107,44 +139,43 @@ while True:
     packet_count += 1
     time.sleep(0.01)
     
-    if gps.fix_quality > 0:
-        msg = "Lat:{} Lng:{} GPSAlt:{} P:{} ".format(gps.latitude,
-                                                     gps.longitude,
-                                                     gps.altitude_m,
-                                                     packet_count)
-        print(msg)
-        rfm9x.send(msg)
-        packet_count += 1
-    time.sleep(0.01)
-    
-    msg = "Temp:{:.2f} Press:{:.2f} Alt:{:.2f} P:{} ".format(sensor.temperature,
-                                                            sensor.pressure,
-                                                            sensor.altitude,
-                                                            packet_count)
-    print(msg)
-    rfm9x.send(msg)
-    packet_count += 1
-    time.sleep(0.01)
-    
     ax,ay,az = imu.acceleration
-    msg = "AX:{:.3f} AY:{:.3f} AZ:{:.3f} P:{} ".format(ax, ay, az, packet_count)
+    msg = "AX:{:.3f} AY:{:.3f} AZ:{:.3f} P:{} R:{} T:{} ".format(ax, ay, az,
+                                                            packet_count,
+                                                            recording,
+                                                            time.monotonic())
     print(msg)
     rfm9x.send(msg)
+    if recording:
+        data = log.process_values(bytearray(msg))
+        log.write(data)
     packet_count += 1
     time.sleep(0.01)
     
     mx,my,mz = imu.magnetic
-    msg = "MX:{:.3f} MY:{:.3f} MZ:{:.3f} P:{} ".format(mx, my, mz, packet_count)
+    msg = "MX:{:.3f} MY:{:.3f} MZ:{:.3f} P:{} R:{} T:{} ".format(mx, my, mz,
+                                                            packet_count,
+                                                            recording,
+                                                            time.monotonic())
     print(msg)
     rfm9x.send(msg)
+    if recording:
+        data = log.process_values(bytearray(msg))
+        log.write(data)
     packet_count += 1
     time.sleep(0.01)
     
     charging = 0
     if p.isCharging():
         charging = 1
-    msg = "Batt:{} Char:{} P:{} ".format(p.getVoltage(), charging, packet_count)
+    msg = "Batt:{} Char:{} P:{} R:{} T:{} ".format(p.getVoltage(), charging,
+                                              packet_count,
+                                              recording,
+                                              time.monotonic())
     rfm9x.send(msg)
+    if recording:
+        data = log.process_values(bytearray(msg))
+        log.write(data)
     packet_count += 1
     print(msg)
     
