@@ -7,6 +7,14 @@ import terminalio
 from adafruit_display_shapes.rect import Rect
 from adafruit_display_shapes.triangle import Triangle
 from adafruit_display_shapes.circle import Circle
+import digitalio
+# set up buttons
+buttons = {
+    "A": digitalio.DigitalInOut(board.GP12),
+    "B": digitalio.DigitalInOut(board.GP13),
+    "X": digitalio.DigitalInOut(board.GP14),
+    "Y": digitalio.DigitalInOut(board.GP15)
+    }
 
 class Enum:
     pass
