@@ -32,5 +32,7 @@ internal class Program
         // wait until the user presses enter
         Console.ReadLine();
         cansat.Disconnect();
+
+        cansat.ShowValues();
     }
 }
