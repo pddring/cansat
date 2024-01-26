@@ -15,6 +15,11 @@ internal class Program
             chosenPort = name;
         }
 
+        if(chosenPort == "") {
+            Console.WriteLine("no COM ports found - please make sure CanSat is plugged in");
+            return;
+        }
+
         Console.WriteLine($"Attempting to connect to {chosenPort}");
         CanSat cansat = new CanSat(chosenPort);
         

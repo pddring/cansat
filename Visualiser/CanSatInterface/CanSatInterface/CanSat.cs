@@ -26,6 +26,7 @@ namespace CanSatInterface
             port.Open();
             port.DataReceived += Port_DataReceived;
             externalHandler = OnDataReceived;
+            port.DtrEnable = true;
         }
 
         private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
