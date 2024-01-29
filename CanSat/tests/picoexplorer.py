@@ -15,7 +15,7 @@
 
 import board
 import busio
-import adafruit_rfm9x
+#import adafruit_rfm9x
 import time
 import digitalio
 import picoexplorer as display
@@ -32,7 +32,7 @@ cs_lora = digitalio.DigitalInOut(board.GP22)
 cs_lora.direction = digitalio.Direction.OUTPUT
 cs_lora.value = False
 reset_lora = digitalio.DigitalInOut(board.GP21)
-rfm9x = adafruit_rfm9x.RFM9x(spi_lora, cs_lora, reset_lora, 433.0, baudrate=1000000)
+#rfm9x = adafruit_rfm9x.RFM9x(spi_lora, cs_lora, reset_lora, 433.0, baudrate=1000000)
 print("Started")
 display.rectangle(0, 0, 240, 240, 0x0000FF)
 display.rectangle(0, 0, 240, 20, 0xFFFFFF)
@@ -84,11 +84,12 @@ while True:
                 log.stop()
             text += b
             indicator.fill = 0x100000
-            rfm9x.send(b)
+            #rfm9x.send(b)
             indicator.fill = 0x000000
             
     text_title.text = text
-    data = rfm9x.receive()
+    #data = rfm9x.receive()
+    data = bytearray("P:1 Fix:1 ")
     
     if data:
         indicator.fill = 0x001000
