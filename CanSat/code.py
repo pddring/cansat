@@ -137,7 +137,7 @@ while True:
         data = log.process_values(bytearray(msg))
         log.write(data)
     packet_count += 1
-    time.sleep(0.01)
+    time.sleep(0.1)
     
     ax,ay,az = imu.acceleration
     msg = "AX:{:.3f} AY:{:.3f} AZ:{:.3f} P:{} R:{} T:{} ".format(ax, ay, az,
