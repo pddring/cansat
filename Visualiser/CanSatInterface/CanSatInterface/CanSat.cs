@@ -11,22 +11,9 @@ namespace CanSatInterface
 
     public delegate void ProcessData(string data);
 
-    public class CanSat
+    public class CanSat: CanSatInterface
     {
         private SerialPort port;
-        private ProcessData externalHandler;
-
-        Dictionary<string, double> Values = new Dictionary<string, double>()
-        {
-            // general
-            { "T", 0 }, // time (s)
-            { "R", 0 }, // recording remotely
-            { "P", 0 }, // packet number
-            
-            // battery
-            { "Char", 0}, // battery is charging
-            { "Batt", 0}, // battery voltage (v)
-        };
 
         public void ShowValues()
         {
@@ -35,32 +22,13 @@ namespace CanSatInterface
                 Console.WriteLine($"{k}: {Values[k]}");
             }
         }
-
-        /// <summary>
-        /// Checks if the CanSat device is logging values on the satellite itself
-        /// </summary>
-        /// <returns>true if data values are being logged to CSV files</returns>
-        public bool isRecordingRemotely()
-        {
-            return Values["R"] > 0;
-        }
-
-        /// <summary>
-        /// Gets total running time in seconds
-        /// </summary>
-        /// <returns></returns>
-        public double getRunningTime()
-        {
-            return Values["T"];
-        }
-
         public CanSat(string PortName)
         {
             port = new SerialPort(PortName, 115200, Parity.None, 8);
         }
 
         
-        public void Connect(ProcessData OnDataReceived)
+        public override void Connect(ProcessData OnDataReceived)
         {
             port.Open();
             port.DataReceived += Port_DataReceived;
@@ -86,7 +54,7 @@ namespace CanSatInterface
             }
         }
 
-        public void Disconnect()
+        public override void Disconnect()
         {
             port.Close();
         }
