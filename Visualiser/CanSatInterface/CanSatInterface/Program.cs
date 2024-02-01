@@ -21,10 +21,10 @@ internal class Program
         }
 
         Console.WriteLine($"Attempting to connect to {chosenPort}");
-        CanSat cansat = new CanSat(chosenPort);
+        CanSatSimulatedTest cansat = new CanSatSimulatedTest(chosenPort);
         
         // Listen for data and display it when received
-        cansat.Connect((string data) =>
+        cansat.Connect((string data, CanSat.DataLabel lastUpdated) =>
         {
             Console.WriteLine($"Received: {data}");
         });
