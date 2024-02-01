@@ -38,11 +38,13 @@ namespace CanSatInterface
             double temp = 23;
             double pressure = 1000;
             double altitude = 20;
+            double ax = 0, ay = 9.81, az = 0;
+            double mx = 0, my = 0, mz = 0;
+            double batt = 4.1;
 
             int remote = 0;
             while (thisDevice.isConnected)
             {
-                Thread.Sleep(1000);
                 TimeSpan s = DateTime.Now - thisDevice.startTime;
                 if(thisDevice.externalHandler != null)
                 {
@@ -53,7 +55,6 @@ namespace CanSatInterface
                     thisDevice.ProcessData($"R: {remote}");
                     thisDevice.ProcessData($"T: {s.TotalSeconds:f2}");
                     p++;
-
                     s = DateTime.Now - thisDevice.startTime;
                     Thread.Sleep(100);
 
@@ -66,7 +67,48 @@ namespace CanSatInterface
                     thisDevice.ProcessData($"P: {p}");
                     thisDevice.ProcessData($"R: {remote}");
                     thisDevice.ProcessData($"T: {s.TotalSeconds:f2}");
+                    p++;
+                    s = DateTime.Now - thisDevice.startTime;
+                    Thread.Sleep(100);
 
+                    //AX:{:.3f} AY:{:.3f} AZ:{:.3f} P:{} R:{} T:{}
+                    ax += r.NextDouble();
+                    ay += r.NextDouble();
+                    az += r.NextDouble();
+                    thisDevice.ProcessData($"AX: {ax:f2}");
+                    thisDevice.ProcessData($"AY: {ay:f2}");
+                    thisDevice.ProcessData($"AZ: {az:f2}");
+                    thisDevice.ProcessData($"P: {p}");
+                    thisDevice.ProcessData($"R: {remote}");
+                    thisDevice.ProcessData($"T: {s.TotalSeconds:f2}");
+                    p++;
+                    s = DateTime.Now - thisDevice.startTime;
+                    Thread.Sleep(100);
+
+                    //MX:{:.3f} MY:{:.3f} MZ:{:.3f} P:{} R:{} T:{} 
+                    mx += r.NextDouble();
+                    my += r.NextDouble();
+                    mz += r.NextDouble();
+                    thisDevice.ProcessData($"MX: {mx:f2}");
+                    thisDevice.ProcessData($"MY: {my:f2}");
+                    thisDevice.ProcessData($"MZ: {mz:f2}");
+                    thisDevice.ProcessData($"P: {p}");
+                    thisDevice.ProcessData($"R: {remote}");
+                    thisDevice.ProcessData($"T: {s.TotalSeconds:f2}");
+                    p++;
+                    s = DateTime.Now - thisDevice.startTime;
+                    Thread.Sleep(100);
+
+                    //Batt:{} Char:{} P:{} R:{} T:{} 
+                    batt -= r.NextDouble() / 10000;
+                    thisDevice.ProcessData($"Batt: {batt:f2}");
+                    thisDevice.ProcessData($"Char: {0}");
+                    thisDevice.ProcessData($"P: {p}");
+                    thisDevice.ProcessData($"R: {remote}");
+                    thisDevice.ProcessData($"T: {s.TotalSeconds:f2}");
+                    p++;
+                    s = DateTime.Now - thisDevice.startTime;
+                    Thread.Sleep(100);
                 }
             }
         }
