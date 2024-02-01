@@ -46,7 +46,7 @@ namespace CanSatInterface
                 TimeSpan s = DateTime.Now - thisDevice.startTime;
                 if(thisDevice.externalHandler != null)
                 {
-                    thisDevice.externalHandler($"Fix:{0} 3D:{0} Sat:{0} P:{p} R:{remote} T:{s.TotalSeconds:f2} ");
+                    thisDevice.ProcessData($"Fix:{0} 3D:{0} Sat:{0} P:{p} R:{remote} T:{s.TotalSeconds:f2} ");
                     p++;
 
                     s = DateTime.Now - thisDevice.startTime;
@@ -55,7 +55,7 @@ namespace CanSatInterface
                     temp += r.NextDouble();
                     pressure += r.NextDouble();
                     altitude += r.NextDouble();
-                    thisDevice.externalHandler($"Temp:{temp:f2} Press:{pressure:f2} Alt:{altitude:f2} P:{p} R:{remote} T:{s.TotalSeconds:f2} ");
+                    thisDevice.ProcessData($"Temp:{temp:f2} Press:{pressure:f2} Alt:{altitude:f2} P:{p} R:{remote} T:{s.TotalSeconds:f2} ");
 
                 }
             }

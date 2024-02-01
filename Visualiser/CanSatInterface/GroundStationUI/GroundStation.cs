@@ -33,12 +33,13 @@ namespace GroundStationUI
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            if(connected)
+            if (connected)
             {
                 connected = false;
                 btnConnect.Text = "&Connect";
                 device.Disconnect();
-            } else
+            }
+            else
             {
                 connected = true;
                 btnConnect.Text = "Dis&connect";
@@ -56,10 +57,11 @@ namespace GroundStationUI
                     lstLog.Invoke(() =>
                     {
                         lstLog.Items.Add(data);
+                        lblTemperature.Text = $"{device.getTemperature()}'C";
                     });
                 });
             }
-            
+
         }
 
         private void btnClearLog_Click(object sender, EventArgs e)

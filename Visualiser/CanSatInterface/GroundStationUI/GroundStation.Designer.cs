@@ -34,10 +34,16 @@
             lstDevices = new ListBox();
             grpTempPlot = new GroupBox();
             grpLog = new GroupBox();
-            lstLog = new ListBox();
             btnClearLog = new Button();
+            lstLog = new ListBox();
+            grpLiveView = new GroupBox();
+            tblLiveView = new TableLayoutPanel();
+            label1 = new Label();
+            lblTemperature = new Label();
             groupBox1.SuspendLayout();
             grpLog.SuspendLayout();
+            grpLiveView.SuspendLayout();
+            tblLiveView.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -99,16 +105,7 @@
             grpLog.Size = new Size(770, 222);
             grpLog.TabIndex = 2;
             grpLog.TabStop = false;
-            grpLog.Text = "Log";
-            // 
-            // lstLog
-            // 
-            lstLog.FormattingEnabled = true;
-            lstLog.ItemHeight = 15;
-            lstLog.Location = new Point(6, 22);
-            lstLog.Name = "lstLog";
-            lstLog.Size = new Size(677, 184);
-            lstLog.TabIndex = 0;
+            grpLog.Text = "Log:";
             // 
             // btnClearLog
             // 
@@ -120,11 +117,65 @@
             btnClearLog.UseVisualStyleBackColor = true;
             btnClearLog.Click += btnClearLog_Click;
             // 
+            // lstLog
+            // 
+            lstLog.FormattingEnabled = true;
+            lstLog.ItemHeight = 15;
+            lstLog.Location = new Point(6, 22);
+            lstLog.Name = "lstLog";
+            lstLog.Size = new Size(677, 184);
+            lstLog.TabIndex = 0;
+            // 
+            // grpLiveView
+            // 
+            grpLiveView.Controls.Add(tblLiveView);
+            grpLiveView.Location = new Point(805, 22);
+            grpLiveView.Name = "grpLiveView";
+            grpLiveView.Size = new Size(251, 341);
+            grpLiveView.TabIndex = 3;
+            grpLiveView.TabStop = false;
+            grpLiveView.Text = "Live View:";
+            // 
+            // tblLiveView
+            // 
+            tblLiveView.ColumnCount = 2;
+            tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tblLiveView.Controls.Add(lblTemperature, 1, 0);
+            tblLiveView.Controls.Add(label1, 0, 0);
+            tblLiveView.Dock = DockStyle.Fill;
+            tblLiveView.Location = new Point(3, 19);
+            tblLiveView.Name = "tblLiveView";
+            tblLiveView.RowCount = 2;
+            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tblLiveView.Size = new Size(245, 319);
+            tblLiveView.TabIndex = 0;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(76, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Temperature:";
+            // 
+            // lblTemperature
+            // 
+            lblTemperature.AutoSize = true;
+            lblTemperature.Location = new Point(125, 0);
+            lblTemperature.Name = "lblTemperature";
+            lblTemperature.Size = new Size(45, 15);
+            lblTemperature.TabIndex = 1;
+            lblTemperature.Text = "Not set";
+            // 
             // GroundStation
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 609);
+            ClientSize = new Size(1068, 609);
+            Controls.Add(grpLiveView);
             Controls.Add(grpLog);
             Controls.Add(grpTempPlot);
             Controls.Add(groupBox1);
@@ -133,6 +184,9 @@
             Load += GroundStation_Load;
             groupBox1.ResumeLayout(false);
             grpLog.ResumeLayout(false);
+            grpLiveView.ResumeLayout(false);
+            tblLiveView.ResumeLayout(false);
+            tblLiveView.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -146,5 +200,9 @@
         private GroupBox grpLog;
         private Button btnClearLog;
         private ListBox lstLog;
+        private GroupBox grpLiveView;
+        private TableLayoutPanel tblLiveView;
+        private Label lblTemperature;
+        private Label label1;
     }
 }

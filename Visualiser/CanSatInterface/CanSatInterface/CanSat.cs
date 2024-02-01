@@ -42,14 +42,7 @@ namespace CanSatInterface
             {
                 case SerialData.Chars:
                     string data = port.ReadLine();
-                    Match m = Regex.Match(data, @"([A-Za-z]+): (-?\d+\.?\d*)");
-                    if(m.Success)
-                    {
-                        string label = m.Groups[1].Value;
-                        double value = double.Parse(m.Groups[2].Value);
-                        Values[label] = value;
-                    }
-                    externalHandler(data);
+                    ProcessData(data);
                     break;
             }
         }

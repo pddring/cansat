@@ -20,6 +20,9 @@ namespace CanSatInterface
             // battery
             { "Char", 0}, // battery is charging
             { "Batt", 0}, // battery voltage (v)
+
+            // bmp280
+            { "Temp", 0}, // temperature
         };
 
         protected ProcessData externalHandler;
@@ -31,6 +34,29 @@ namespace CanSatInterface
                 Console.WriteLine($"{k}: {Values[k]}");
             }
         }
+
+        protected void ProcessData(string data)
+        {
+            Match m = Regex.Match(data, @"([A-Za-z]+): (-?\d+\.?\d*)");
+            if (m.Success)
+            {
+                string label = m.Groups[1].Value;
+                double value = double.Parse(m.Groups[2].Value);
+                Values[label] = value;
+            }
+            if (externalHandler != null)
+                externalHandler(data);
+        }
+
+        /// <summary>
+        /// Gets the current temperature
+        /// </summary>
+        /// <returns>Temperature in degrees C</returns>
+        public double getTemperature()
+        {
+            return Values["Temp"];
+        }
+
 
         /// <summary>
         /// Checks if the CanSat device is logging values on the satellite itself
