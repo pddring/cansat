@@ -21,8 +21,23 @@ namespace CanSatInterface
             { "Char", 0}, // battery is charging
             { "Batt", 0}, // battery voltage (v)
 
-            // bmp280
-            { "Temp", 0}, // temperature
+            // GPS
+            { "Fix", 0},  // GPS satellite fix
+            { "Sat", 0},  // GPS satellite count
+            { "3D", 0},   // 3d GPS satellite fix
+
+            // Environment
+            { "Press", 0},  // Air pressure (mb)
+            { "Temp", 0},  // Air temperature (degrees C)
+            { "Alt", 0},  // Altitude above starting level (m)
+
+            // IMU
+            { "AX", 0},  // Acceleration in x axis (m/s2)
+            { "AY", 0},  // Acceleration in y axis (m/s2)
+            { "AZ", 0},  // Acceleration in z axis (m/s2)
+            { "MX", 0},  // Magnetic field strength in x axis 
+            { "MY", 0},  // Magnetic field strength in y axis 
+            { "MZ", 0},  // Magnetic field strength in z axis 
         };
 
         protected ProcessData externalHandler;

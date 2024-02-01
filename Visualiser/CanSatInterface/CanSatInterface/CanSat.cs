@@ -16,13 +16,7 @@ namespace CanSatInterface
     {
         private SerialPort port;
 
-        public void ShowValues()
-        {
-            foreach(string k in Values.Keys)
-            {
-                Console.WriteLine($"{k}: {Values[k]}");
-            }
-        }
+        
         public CanSat(string PortName)
         {
             port = new SerialPort(PortName, 115200, Parity.None, 8);
