@@ -10,7 +10,7 @@ using System.Transactions;
 namespace CanSatInterface
 {
 
-    public delegate void ProcessData(string data);
+    public delegate void ProcessData(string data, CanSat.DataLabel lastUpdated);
 
     public class CanSat: CanSatInterface
     {

@@ -24,7 +24,7 @@ internal class Program
         CanSatSimulatedTest cansat = new CanSatSimulatedTest(chosenPort);
         
         // Listen for data and display it when received
-        cansat.Connect((string data) =>
+        cansat.Connect((string data, CanSat.DataLabel lastUpdated) =>
         {
             Console.WriteLine($"Received: {data}");
         });

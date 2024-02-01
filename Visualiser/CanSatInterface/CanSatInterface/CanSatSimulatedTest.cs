@@ -57,11 +57,11 @@ namespace CanSatInterface
                     s = DateTime.Now - thisDevice.startTime;
                     Thread.Sleep(100);
 
-                    temp += r.NextDouble();
-                    pressure += r.NextDouble();
-                    altitude += r.NextDouble();
+                    temp += r.NextDouble() - .5;
+                    pressure += r.NextDouble() - .5;
+                    altitude += r.NextDouble() - .5;
                     thisDevice.ProcessData($"Temp: {temp:f2}");
-                    thisDevice.ProcessData($"Press :{pressure:f2}");
+                    thisDevice.ProcessData($"Press: {pressure:f2}");
                     thisDevice.ProcessData($"Alt: {altitude:f2}");
                     thisDevice.ProcessData($"P: {p}");
                     thisDevice.ProcessData($"R: {remote}");
