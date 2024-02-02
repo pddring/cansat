@@ -204,5 +204,14 @@ namespace CanSatInterface
         abstract public void Connect(ProcessData OnDataReceived);
 
         abstract public void Disconnect();
+
+        /// <summary>
+        /// Gets the current battery voltage. Should be between 3.7 and 4.2v
+        /// </summary>
+        /// <returns>Voltage (v)</returns>
+        public double getBatteryVoltage()
+        {
+            return Values["Batt"];
+        }
     }
 }

@@ -30,16 +30,34 @@ namespace GroundStationUI
             UpdateDeviceList();
         }
         ScottPlot.WinForms.FormsPlot tempPlot;
+        ScottPlot.WinForms.FormsPlot batteryPlot;
         DataLogger tempLogger;
         DataLogger altitudeLogger;
+        DataLogger batteryVoltageLogger;
 
         private void GroundStation_Load(object sender, EventArgs e)
         {
             tempPlot = new ScottPlot.WinForms.FormsPlot();
-            grpTempPlot.Controls.Add(tempPlot);
+            tabTemperature.Controls.Add(tempPlot);
             tempPlot.Dock = DockStyle.Fill;
             tempLogger = tempPlot.Plot.Add.DataLogger();
             altitudeLogger = tempPlot.Plot.Add.DataLogger();
+            tempLogger.Axes.YAxis = tempPlot.Plot.Axes.Left;
+            tempPlot.Plot.Axes.Left.Label.Text = "Temperature ('C)";
+            tempPlot.Plot.Axes.Left.Label.ForeColor = tempLogger.Color;
+            altitudeLogger.Axes.YAxis = tempPlot.Plot.Axes.Right;
+            tempPlot.Plot.Axes.Right.Label.Text = "Altitude (m)";
+            tempPlot.Plot.Axes.Right.Label.ForeColor = altitudeLogger.Color;
+            tempPlot.Plot.Axes.Bottom.Label.Text = "Time (s)";
+
+            batteryPlot = new ScottPlot.WinForms.FormsPlot();
+            tabBattery.Controls.Add(batteryPlot);
+            batteryPlot.Dock = DockStyle.Fill;
+            batteryVoltageLogger = batteryPlot.Plot.Add.DataLogger();
+            batteryPlot.Plot.Axes.Left.Label.Text = "Voltage (v)";
+            batteryPlot.Plot.Axes.Left.Label.ForeColor = batteryVoltageLogger.Color;
+            batteryPlot.Plot.Axes.Bottom.Label.Text = "Time (s)";
+
             UpdateDeviceList();
         }
 
@@ -76,23 +94,28 @@ namespace GroundStationUI
                             {
                                 case CanSatInterface.CanSatInterface.DataLabel.Temperature:
                                     double temperature = device.getTemperature();
-                                    lblTemperature.Text = $"{temperature}'C";                                    
+                                    lblTemperature.Text = $"{temperature}'C";
                                     tempLogger.Add(time, temperature);
-                                    lblPressure.Text = $"{device.getPressure()}hPa";
+                                    lblPressure.Text = $"{device.getPressure():f2}hPa";
                                     tempPlot.Refresh();
                                     break;
 
                                 case CanSatInterface.CanSatInterface.DataLabel.Altitude:
                                     double altitude = device.getAltitude();
-                                    lblAltitude.Text = $"{altitude}m";
+                                    lblAltitude.Text = $"{altitude:f2}m";
                                     altitudeLogger.Add(time, altitude);
                                     tempPlot.Refresh();
                                     break;
+
+                                case CanSatInterface.CanSatInterface.DataLabel.BatteryVoltage:
+                                    double voltage = device.getBatteryVoltage();
+                                    lblBatteryVoltage.Text = $"{voltage:f2}v";
+                                    batteryVoltageLogger.Add(time, voltage);
+                                    batteryPlot.Refresh();
+                                    break;
                             }
-                            
-                            lblAltitude.Text = $"{device.getAltitude()}m";
                             lstLog.SelectedIndex = lstLog.Items.Count - 1;
-                            
+
                         });
                     }
                     catch (Exception e)
@@ -111,7 +134,7 @@ namespace GroundStationUI
 
         private void GroundStation_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(connected)
+            if (connected)
             {
                 device.Disconnect();
             }
