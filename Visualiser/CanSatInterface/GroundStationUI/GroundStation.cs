@@ -61,7 +61,7 @@ namespace GroundStationUI
             UpdateDeviceList();
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
+        void Connect()
         {
             if (connected)
             {
@@ -124,12 +124,16 @@ namespace GroundStationUI
                     }
                 });
             }
+        }
 
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            Connect();
         }
 
         private void btnClearLog_Click(object sender, EventArgs e)
         {
-            lstLog.Items.Clear();
+            ClearLog();
         }
 
         private void GroundStation_FormClosing(object sender, FormClosingEventArgs e)
@@ -137,6 +141,77 @@ namespace GroundStationUI
             if (connected)
             {
                 device.Disconnect();
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void devicesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            devicesToolStripMenuItem.Checked = !devicesToolStripMenuItem.Checked;
+            groupDevices.Visible = devicesToolStripMenuItem.Checked;
+        }
+
+        private void logToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logToolStripMenuItem.Checked = !logToolStripMenuItem.Checked;
+            groupDevices.Visible = logToolStripMenuItem.Checked;
+        }
+
+        private void liveViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            liveViewToolStripMenuItem.Checked = !liveViewToolStripMenuItem.Checked;
+            groupLiveView.Visible = liveViewToolStripMenuItem.Checked;
+        }
+
+        private void graphsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graphsToolStripMenuItem.Checked = !graphsToolStripMenuItem.Checked;
+            tabGraphs.Visible = graphsToolStripMenuItem.Checked;
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateDeviceList();
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Connect();
+        }
+
+        void ClearLog()
+        {
+            lstLog.Items.Clear();
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClearLog();
+        }
+
+        void ExportLog(string Filename)
+        {
+            using (StreamWriter s = new StreamWriter(Filename))
+            {
+                foreach (var item in lstLog.Items)
+                {
+                    s.WriteLine(item.ToString());
+                }
+            }
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Title = "Export log file";
+            dlg.Filter = "Text file|*.txt";
+            if(dlg.ShowDialog() == DialogResult.OK)
+            {
+                ExportLog(dlg.FileName);
             }
         }
     }

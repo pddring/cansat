@@ -28,58 +28,76 @@
         /// </summary>
         private void InitializeComponent()
         {
-            groupBox1 = new GroupBox();
-            btnConnect = new Button();
+            groupDevices = new GroupBox();
+            flowLayoutPanel1 = new FlowLayoutPanel();
             btnRefresh = new Button();
+            btnConnect = new Button();
             lstDevices = new ListBox();
-            grpLog = new GroupBox();
+            groupLog = new GroupBox();
+            flowLayoutPanel2 = new FlowLayoutPanel();
             btnClearLog = new Button();
             lstLog = new ListBox();
-            grpLiveView = new GroupBox();
+            groupLiveView = new GroupBox();
             tblLiveView = new TableLayoutPanel();
+            label4 = new Label();
             label3 = new Label();
-            lblAltitude = new Label();
             label2 = new Label();
             lblTemperature = new Label();
             label1 = new Label();
             lblPressure = new Label();
-            tabControl1 = new TabControl();
+            lblBatteryVoltage = new Label();
+            lblAltitude = new Label();
+            tabGraphs = new TabControl();
             tabTemperature = new TabPage();
             tabBattery = new TabPage();
-            label4 = new Label();
-            lblBatteryVoltage = new Label();
-            groupBox1.SuspendLayout();
-            grpLog.SuspendLayout();
-            grpLiveView.SuspendLayout();
+            mainMenu = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
+            viewToolStripMenuItem = new ToolStripMenuItem();
+            devicesToolStripMenuItem = new ToolStripMenuItem();
+            refreshToolStripMenuItem = new ToolStripMenuItem();
+            connectToolStripMenuItem = new ToolStripMenuItem();
+            logToolStripMenuItem = new ToolStripMenuItem();
+            clearToolStripMenuItem = new ToolStripMenuItem();
+            liveViewToolStripMenuItem = new ToolStripMenuItem();
+            graphsToolStripMenuItem = new ToolStripMenuItem();
+            btnExport = new Button();
+            groupDevices.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
+            groupLog.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
+            groupLiveView.SuspendLayout();
             tblLiveView.SuspendLayout();
-            tabControl1.SuspendLayout();
+            tabGraphs.SuspendLayout();
+            mainMenu.SuspendLayout();
             SuspendLayout();
             // 
-            // groupBox1
+            // groupDevices
             // 
-            groupBox1.Controls.Add(btnConnect);
-            groupBox1.Controls.Add(btnRefresh);
-            groupBox1.Controls.Add(lstDevices);
-            groupBox1.Location = new Point(12, 12);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(200, 357);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Devices:";
+            groupDevices.Controls.Add(flowLayoutPanel1);
+            groupDevices.Controls.Add(lstDevices);
+            groupDevices.Dock = DockStyle.Left;
+            groupDevices.Location = new Point(0, 24);
+            groupDevices.Name = "groupDevices";
+            groupDevices.Size = new Size(200, 585);
+            groupDevices.TabIndex = 0;
+            groupDevices.TabStop = false;
+            groupDevices.Text = "Devices:";
             // 
-            // btnConnect
+            // flowLayoutPanel1
             // 
-            btnConnect.Location = new Point(81, 328);
-            btnConnect.Name = "btnConnect";
-            btnConnect.Size = new Size(75, 23);
-            btnConnect.TabIndex = 2;
-            btnConnect.Text = "&Connect";
-            btnConnect.UseVisualStyleBackColor = true;
-            btnConnect.Click += btnConnect_Click;
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.Controls.Add(btnRefresh);
+            flowLayoutPanel1.Controls.Add(btnConnect);
+            flowLayoutPanel1.Dock = DockStyle.Bottom;
+            flowLayoutPanel1.Location = new Point(3, 553);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(194, 29);
+            flowLayoutPanel1.TabIndex = 6;
             // 
             // btnRefresh
             // 
-            btnRefresh.Location = new Point(0, 328);
+            btnRefresh.Location = new Point(3, 3);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(75, 23);
             btnRefresh.TabIndex = 1;
@@ -87,29 +105,52 @@
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefresh_Click;
             // 
+            // btnConnect
+            // 
+            btnConnect.Location = new Point(84, 3);
+            btnConnect.Name = "btnConnect";
+            btnConnect.Size = new Size(75, 23);
+            btnConnect.TabIndex = 2;
+            btnConnect.Text = "&Connect";
+            btnConnect.UseVisualStyleBackColor = true;
+            btnConnect.Click += btnConnect_Click;
+            // 
             // lstDevices
             // 
+            lstDevices.Dock = DockStyle.Fill;
             lstDevices.FormattingEnabled = true;
             lstDevices.ItemHeight = 15;
-            lstDevices.Location = new Point(6, 22);
+            lstDevices.Location = new Point(3, 19);
             lstDevices.Name = "lstDevices";
-            lstDevices.Size = new Size(188, 289);
+            lstDevices.Size = new Size(194, 563);
             lstDevices.TabIndex = 0;
             // 
-            // grpLog
+            // groupLog
             // 
-            grpLog.Controls.Add(btnClearLog);
-            grpLog.Controls.Add(lstLog);
-            grpLog.Location = new Point(18, 375);
-            grpLog.Name = "grpLog";
-            grpLog.Size = new Size(770, 222);
-            grpLog.TabIndex = 2;
-            grpLog.TabStop = false;
-            grpLog.Text = "Log:";
+            groupLog.Controls.Add(flowLayoutPanel2);
+            groupLog.Controls.Add(lstLog);
+            groupLog.Dock = DockStyle.Bottom;
+            groupLog.Location = new Point(200, 387);
+            groupLog.Name = "groupLog";
+            groupLog.Size = new Size(868, 222);
+            groupLog.TabIndex = 2;
+            groupLog.TabStop = false;
+            groupLog.Text = "Log:";
+            // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.AutoSize = true;
+            flowLayoutPanel2.Controls.Add(btnClearLog);
+            flowLayoutPanel2.Controls.Add(btnExport);
+            flowLayoutPanel2.Dock = DockStyle.Right;
+            flowLayoutPanel2.Location = new Point(784, 19);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Size = new Size(81, 200);
+            flowLayoutPanel2.TabIndex = 2;
             // 
             // btnClearLog
             // 
-            btnClearLog.Location = new Point(689, 22);
+            btnClearLog.Location = new Point(3, 3);
             btnClearLog.Name = "btnClearLog";
             btnClearLog.Size = new Size(75, 23);
             btnClearLog.TabIndex = 1;
@@ -119,22 +160,24 @@
             // 
             // lstLog
             // 
+            lstLog.Dock = DockStyle.Fill;
             lstLog.FormattingEnabled = true;
             lstLog.ItemHeight = 15;
-            lstLog.Location = new Point(6, 22);
+            lstLog.Location = new Point(3, 19);
             lstLog.Name = "lstLog";
-            lstLog.Size = new Size(677, 184);
+            lstLog.Size = new Size(862, 200);
             lstLog.TabIndex = 0;
             // 
-            // grpLiveView
+            // groupLiveView
             // 
-            grpLiveView.Controls.Add(tblLiveView);
-            grpLiveView.Location = new Point(805, 22);
-            grpLiveView.Name = "grpLiveView";
-            grpLiveView.Size = new Size(251, 341);
-            grpLiveView.TabIndex = 3;
-            grpLiveView.TabStop = false;
-            grpLiveView.Text = "Live View:";
+            groupLiveView.Controls.Add(tblLiveView);
+            groupLiveView.Dock = DockStyle.Right;
+            groupLiveView.Location = new Point(817, 24);
+            groupLiveView.Name = "groupLiveView";
+            groupLiveView.Size = new Size(251, 363);
+            groupLiveView.TabIndex = 3;
+            groupLiveView.TabStop = false;
+            groupLiveView.Text = "Live View:";
             // 
             // tblLiveView
             // 
@@ -153,35 +196,35 @@
             tblLiveView.Location = new Point(3, 19);
             tblLiveView.Name = "tblLiveView";
             tblLiveView.RowCount = 4;
-            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tblLiveView.Size = new Size(245, 319);
+            tblLiveView.RowStyles.Add(new RowStyle());
+            tblLiveView.RowStyles.Add(new RowStyle());
+            tblLiveView.RowStyles.Add(new RowStyle());
+            tblLiveView.RowStyles.Add(new RowStyle());
+            tblLiveView.Size = new Size(245, 341);
             tblLiveView.TabIndex = 0;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(3, 45);
+            label4.Name = "label4";
+            label4.Size = new Size(89, 15);
+            label4.TabIndex = 6;
+            label4.Text = "Battery Voltage:";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(3, 278);
+            label3.Location = new Point(3, 30);
             label3.Name = "label3";
             label3.Size = new Size(52, 15);
             label3.TabIndex = 5;
             label3.Text = "Altitude:";
             // 
-            // lblAltitude
-            // 
-            lblAltitude.AutoSize = true;
-            lblAltitude.Location = new Point(125, 278);
-            lblAltitude.Name = "lblAltitude";
-            lblAltitude.Size = new Size(45, 15);
-            lblAltitude.TabIndex = 4;
-            lblAltitude.Text = "Not set";
-            // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(3, 139);
+            label2.Location = new Point(3, 15);
             label2.Name = "label2";
             label2.Size = new Size(54, 15);
             label2.TabIndex = 3;
@@ -208,30 +251,49 @@
             // lblPressure
             // 
             lblPressure.AutoSize = true;
-            lblPressure.Location = new Point(125, 139);
+            lblPressure.Location = new Point(125, 15);
             lblPressure.Name = "lblPressure";
             lblPressure.Size = new Size(45, 15);
             lblPressure.TabIndex = 2;
             lblPressure.Text = "Not set";
             // 
-            // tabControl1
+            // lblBatteryVoltage
             // 
-            tabControl1.Controls.Add(tabTemperature);
-            tabControl1.Controls.Add(tabBattery);
-            tabControl1.Location = new Point(218, 22);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(584, 341);
-            tabControl1.TabIndex = 4;
+            lblBatteryVoltage.AutoSize = true;
+            lblBatteryVoltage.Location = new Point(125, 45);
+            lblBatteryVoltage.Name = "lblBatteryVoltage";
+            lblBatteryVoltage.Size = new Size(45, 15);
+            lblBatteryVoltage.TabIndex = 7;
+            lblBatteryVoltage.Text = "Not set";
+            // 
+            // lblAltitude
+            // 
+            lblAltitude.AutoSize = true;
+            lblAltitude.Location = new Point(125, 30);
+            lblAltitude.Name = "lblAltitude";
+            lblAltitude.Size = new Size(45, 15);
+            lblAltitude.TabIndex = 4;
+            lblAltitude.Text = "Not set";
+            // 
+            // tabGraphs
+            // 
+            tabGraphs.Controls.Add(tabTemperature);
+            tabGraphs.Controls.Add(tabBattery);
+            tabGraphs.Dock = DockStyle.Fill;
+            tabGraphs.Location = new Point(200, 24);
+            tabGraphs.Name = "tabGraphs";
+            tabGraphs.SelectedIndex = 0;
+            tabGraphs.Size = new Size(617, 363);
+            tabGraphs.TabIndex = 4;
             // 
             // tabTemperature
             // 
             tabTemperature.Location = new Point(4, 24);
             tabTemperature.Name = "tabTemperature";
             tabTemperature.Padding = new Padding(3);
-            tabTemperature.Size = new Size(576, 313);
+            tabTemperature.Size = new Size(609, 335);
             tabTemperature.TabIndex = 0;
-            tabTemperature.Text = "Temperature";
+            tabTemperature.Text = "Temperature, altitude and pressure";
             tabTemperature.UseVisualStyleBackColor = true;
             // 
             // tabBattery
@@ -239,61 +301,151 @@
             tabBattery.Location = new Point(4, 24);
             tabBattery.Name = "tabBattery";
             tabBattery.Padding = new Padding(3);
-            tabBattery.Size = new Size(576, 313);
+            tabBattery.Size = new Size(609, 335);
             tabBattery.TabIndex = 1;
             tabBattery.Text = "Battery";
             tabBattery.UseVisualStyleBackColor = true;
             // 
-            // label4
+            // mainMenu
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(3, 298);
-            label4.Name = "label4";
-            label4.Size = new Size(89, 15);
-            label4.TabIndex = 6;
-            label4.Text = "Battery Voltage:";
+            mainMenu.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, viewToolStripMenuItem });
+            mainMenu.Location = new Point(0, 0);
+            mainMenu.Name = "mainMenu";
+            mainMenu.Size = new Size(1068, 24);
+            mainMenu.TabIndex = 5;
+            mainMenu.Text = "menuStrip1";
             // 
-            // lblBatteryVoltage
+            // fileToolStripMenuItem
             // 
-            lblBatteryVoltage.AutoSize = true;
-            lblBatteryVoltage.Location = new Point(125, 298);
-            lblBatteryVoltage.Name = "lblBatteryVoltage";
-            lblBatteryVoltage.Size = new Size(45, 15);
-            lblBatteryVoltage.TabIndex = 7;
-            lblBatteryVoltage.Text = "Not set";
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(37, 20);
+            fileToolStripMenuItem.Text = "&File";
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(93, 22);
+            exitToolStripMenuItem.Text = "E&xit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
+            // 
+            // viewToolStripMenuItem
+            // 
+            viewToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { devicesToolStripMenuItem, logToolStripMenuItem, liveViewToolStripMenuItem, graphsToolStripMenuItem });
+            viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            viewToolStripMenuItem.Size = new Size(44, 20);
+            viewToolStripMenuItem.Text = "&View";
+            // 
+            // devicesToolStripMenuItem
+            // 
+            devicesToolStripMenuItem.Checked = true;
+            devicesToolStripMenuItem.CheckState = CheckState.Checked;
+            devicesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { refreshToolStripMenuItem, connectToolStripMenuItem });
+            devicesToolStripMenuItem.Name = "devicesToolStripMenuItem";
+            devicesToolStripMenuItem.Size = new Size(180, 22);
+            devicesToolStripMenuItem.Text = "&Devices";
+            devicesToolStripMenuItem.Click += devicesToolStripMenuItem_Click;
+            // 
+            // refreshToolStripMenuItem
+            // 
+            refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            refreshToolStripMenuItem.Size = new Size(119, 22);
+            refreshToolStripMenuItem.Text = "&Refresh";
+            refreshToolStripMenuItem.Click += refreshToolStripMenuItem_Click;
+            // 
+            // connectToolStripMenuItem
+            // 
+            connectToolStripMenuItem.Name = "connectToolStripMenuItem";
+            connectToolStripMenuItem.Size = new Size(119, 22);
+            connectToolStripMenuItem.Text = "&Connect";
+            connectToolStripMenuItem.Click += connectToolStripMenuItem_Click;
+            // 
+            // logToolStripMenuItem
+            // 
+            logToolStripMenuItem.Checked = true;
+            logToolStripMenuItem.CheckState = CheckState.Checked;
+            logToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clearToolStripMenuItem });
+            logToolStripMenuItem.Name = "logToolStripMenuItem";
+            logToolStripMenuItem.Size = new Size(180, 22);
+            logToolStripMenuItem.Text = "&Log";
+            logToolStripMenuItem.Click += logToolStripMenuItem_Click;
+            // 
+            // clearToolStripMenuItem
+            // 
+            clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            clearToolStripMenuItem.Size = new Size(180, 22);
+            clearToolStripMenuItem.Text = "&Clear";
+            clearToolStripMenuItem.Click += clearToolStripMenuItem_Click;
+            // 
+            // liveViewToolStripMenuItem
+            // 
+            liveViewToolStripMenuItem.Checked = true;
+            liveViewToolStripMenuItem.CheckState = CheckState.Checked;
+            liveViewToolStripMenuItem.Name = "liveViewToolStripMenuItem";
+            liveViewToolStripMenuItem.Size = new Size(180, 22);
+            liveViewToolStripMenuItem.Text = "Li&ve view";
+            liveViewToolStripMenuItem.Click += liveViewToolStripMenuItem_Click;
+            // 
+            // graphsToolStripMenuItem
+            // 
+            graphsToolStripMenuItem.Checked = true;
+            graphsToolStripMenuItem.CheckState = CheckState.Checked;
+            graphsToolStripMenuItem.Name = "graphsToolStripMenuItem";
+            graphsToolStripMenuItem.Size = new Size(180, 22);
+            graphsToolStripMenuItem.Text = "&Graphs";
+            graphsToolStripMenuItem.Click += graphsToolStripMenuItem_Click;
+            // 
+            // btnExport
+            // 
+            btnExport.Location = new Point(3, 32);
+            btnExport.Name = "btnExport";
+            btnExport.Size = new Size(75, 23);
+            btnExport.TabIndex = 2;
+            btnExport.Text = "E&xport";
+            btnExport.UseVisualStyleBackColor = true;
+            btnExport.Click += btnExport_Click;
             // 
             // GroundStation
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1068, 609);
-            Controls.Add(tabControl1);
-            Controls.Add(grpLiveView);
-            Controls.Add(grpLog);
-            Controls.Add(groupBox1);
+            Controls.Add(tabGraphs);
+            Controls.Add(groupLiveView);
+            Controls.Add(groupLog);
+            Controls.Add(groupDevices);
+            Controls.Add(mainMenu);
+            MainMenuStrip = mainMenu;
             Name = "GroundStation";
             Text = "CanSat Ground Station";
             FormClosing += GroundStation_FormClosing;
             Load += GroundStation_Load;
-            groupBox1.ResumeLayout(false);
-            grpLog.ResumeLayout(false);
-            grpLiveView.ResumeLayout(false);
+            groupDevices.ResumeLayout(false);
+            groupDevices.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            groupLog.ResumeLayout(false);
+            groupLog.PerformLayout();
+            flowLayoutPanel2.ResumeLayout(false);
+            groupLiveView.ResumeLayout(false);
             tblLiveView.ResumeLayout(false);
             tblLiveView.PerformLayout();
-            tabControl1.ResumeLayout(false);
+            tabGraphs.ResumeLayout(false);
+            mainMenu.ResumeLayout(false);
+            mainMenu.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private GroupBox groupBox1;
+        private GroupBox groupDevices;
         private Button btnConnect;
         private Button btnRefresh;
         private ListBox lstDevices;
-        private GroupBox grpLog;
+        private GroupBox groupLog;
         private Button btnClearLog;
         private ListBox lstLog;
-        private GroupBox grpLiveView;
+        private GroupBox groupLiveView;
         private TableLayoutPanel tblLiveView;
         private Label lblTemperature;
         private Label label1;
@@ -301,10 +453,24 @@
         private Label lblPressure;
         private Label label3;
         private Label lblAltitude;
-        private TabControl tabControl1;
+        private TabControl tabGraphs;
         private TabPage tabTemperature;
         private TabPage tabBattery;
         private Label label4;
         private Label lblBatteryVoltage;
+        private MenuStrip mainMenu;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem viewToolStripMenuItem;
+        private ToolStripMenuItem devicesToolStripMenuItem;
+        private ToolStripMenuItem logToolStripMenuItem;
+        private ToolStripMenuItem liveViewToolStripMenuItem;
+        private ToolStripMenuItem graphsToolStripMenuItem;
+        private ToolStripMenuItem refreshToolStripMenuItem;
+        private ToolStripMenuItem connectToolStripMenuItem;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private ToolStripMenuItem clearToolStripMenuItem;
+        private Button btnExport;
     }
 }
