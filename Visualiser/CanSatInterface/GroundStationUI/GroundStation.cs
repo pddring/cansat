@@ -31,25 +31,55 @@ namespace GroundStationUI
         }
         ScottPlot.WinForms.FormsPlot tempPlot;
         ScottPlot.WinForms.FormsPlot batteryPlot;
+        ScottPlot.WinForms.FormsPlot pressureAndAltitudePlot;
+        ScottPlot.WinForms.FormsPlot accelerationPlot;
+
+
         DataLogger tempLogger;
         DataLogger altitudeLogger;
+        DataLogger pressureLogger;
         DataLogger batteryVoltageLogger;
+        DataLogger accelerationXLogger;
+        DataLogger accelerationYLogger;
+        DataLogger accelerationZLogger;
 
         private void GroundStation_Load(object sender, EventArgs e)
         {
+            // temperature graph
             tempPlot = new ScottPlot.WinForms.FormsPlot();
             tabTemperature.Controls.Add(tempPlot);
             tempPlot.Dock = DockStyle.Fill;
             tempLogger = tempPlot.Plot.Add.DataLogger();
-            altitudeLogger = tempPlot.Plot.Add.DataLogger();
-            tempLogger.Axes.YAxis = tempPlot.Plot.Axes.Left;
             tempPlot.Plot.Axes.Left.Label.Text = "Temperature ('C)";
             tempPlot.Plot.Axes.Left.Label.ForeColor = tempLogger.Color;
-            altitudeLogger.Axes.YAxis = tempPlot.Plot.Axes.Right;
-            tempPlot.Plot.Axes.Right.Label.Text = "Altitude (m)";
-            tempPlot.Plot.Axes.Right.Label.ForeColor = altitudeLogger.Color;
             tempPlot.Plot.Axes.Bottom.Label.Text = "Time (s)";
 
+            // pressure and altitude graph
+            pressureAndAltitudePlot = new ScottPlot.WinForms.FormsPlot();
+            tabPressureAndAltityde.Controls.Add(pressureAndAltitudePlot);
+            pressureAndAltitudePlot.Dock = DockStyle.Fill;
+            altitudeLogger = pressureAndAltitudePlot.Plot.Add.DataLogger();
+            altitudeLogger.Axes.YAxis = pressureAndAltitudePlot.Plot.Axes.Right;
+            pressureAndAltitudePlot.Plot.Axes.Right.Label.Text = "Altitude (m)";
+            pressureAndAltitudePlot.Plot.Axes.Right.Label.ForeColor = altitudeLogger.Color;
+            pressureAndAltitudePlot.Plot.Axes.Bottom.Label.Text = "Time (s)";
+
+            pressureLogger = pressureAndAltitudePlot.Plot.Add.DataLogger();
+            pressureLogger.Axes.YAxis = pressureAndAltitudePlot.Plot.Axes.Left;
+            pressureAndAltitudePlot.Plot.Axes.Left.Label.Text = "Pressure (hPa)";
+            pressureAndAltitudePlot.Plot.Axes.Left.Label.ForeColor = pressureLogger.Color;
+
+            // acceleration graph
+            accelerationPlot = new ScottPlot.WinForms.FormsPlot();
+            tabAcceleration.Controls.Add(accelerationPlot);
+            accelerationPlot.Dock = DockStyle.Fill;
+            accelerationXLogger = accelerationPlot.Plot.Add.DataLogger();
+            accelerationYLogger = accelerationPlot.Plot.Add.DataLogger();
+            accelerationZLogger = accelerationPlot.Plot.Add.DataLogger();
+            accelerationPlot.Plot.Axes.Bottom.Label.Text = "Time (s)";
+            accelerationPlot.Plot.Axes.Left.Label.Text = ("Acceleration (m/s²)");
+
+            // battery graph
             batteryPlot = new ScottPlot.WinForms.FormsPlot();
             tabBattery.Controls.Add(batteryPlot);
             batteryPlot.Dock = DockStyle.Fill;
@@ -84,6 +114,7 @@ namespace GroundStationUI
                 }
                 device.Connect((string data, CanSatInterface.CanSat.DataLabel lastUpdated) =>
                 {
+                    double[] a = new double[3];
                     try
                     {
                         lstLog.Invoke(() =>
@@ -92,11 +123,31 @@ namespace GroundStationUI
                             double time = device.getRunningTime();
                             switch (lastUpdated)
                             {
+                                case CanSatInterface.CanSatInterface.DataLabel.AccelerationX:
+                                    a = device.getAcceleration();
+                                    accelerationXLogger.Add(time, a[0]);
+                                    lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
+                                    accelerationPlot.Refresh();
+                                    break;
+
+                                case CanSatInterface.CanSatInterface.DataLabel.AccelerationY:
+                                    a = device.getAcceleration();
+                                    accelerationYLogger.Add(time, a[1]);
+                                    lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
+                                    accelerationPlot.Refresh();
+                                    break;
+
+                                case CanSatInterface.CanSatInterface.DataLabel.AccelerationZ:
+                                    a = device.getAcceleration();
+                                    accelerationZLogger.Add(time, a[2]);
+                                    lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
+                                    accelerationPlot.Refresh();
+                                    break;
+
                                 case CanSatInterface.CanSatInterface.DataLabel.Temperature:
                                     double temperature = device.getTemperature();
                                     lblTemperature.Text = $"{temperature}'C";
                                     tempLogger.Add(time, temperature);
-                                    lblPressure.Text = $"{device.getPressure():f2}hPa";
                                     tempPlot.Refresh();
                                     break;
 
@@ -104,7 +155,14 @@ namespace GroundStationUI
                                     double altitude = device.getAltitude();
                                     lblAltitude.Text = $"{altitude:f2}m";
                                     altitudeLogger.Add(time, altitude);
-                                    tempPlot.Refresh();
+                                    pressureAndAltitudePlot.Refresh();
+                                    break;
+
+                                case CanSatInterface.CanSatInterface.DataLabel.Pressure:
+                                    double pressure = device.getPressure();
+                                    lblPressure.Text = $"{pressure:f2}hPa";
+                                    pressureLogger.Add(time, pressure);
+                                    pressureAndAltitudePlot.Refresh();
                                     break;
 
                                 case CanSatInterface.CanSatInterface.DataLabel.BatteryVoltage:

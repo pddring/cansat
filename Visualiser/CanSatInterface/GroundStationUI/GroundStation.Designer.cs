@@ -36,6 +36,7 @@
             groupLog = new GroupBox();
             flowLayoutPanel2 = new FlowLayoutPanel();
             btnClearLog = new Button();
+            btnExport = new Button();
             lstLog = new ListBox();
             groupLiveView = new GroupBox();
             tblLiveView = new TableLayoutPanel();
@@ -50,6 +51,8 @@
             tabGraphs = new TabControl();
             tabTemperature = new TabPage();
             tabBattery = new TabPage();
+            tabPressureAndAltityde = new TabPage();
+            tabAcceleration = new TabPage();
             mainMenu = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
@@ -61,7 +64,8 @@
             clearToolStripMenuItem = new ToolStripMenuItem();
             liveViewToolStripMenuItem = new ToolStripMenuItem();
             graphsToolStripMenuItem = new ToolStripMenuItem();
-            btnExport = new Button();
+            label5 = new Label();
+            lblAcceleration = new Label();
             groupDevices.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             groupLog.SuspendLayout();
@@ -158,6 +162,16 @@
             btnClearLog.UseVisualStyleBackColor = true;
             btnClearLog.Click += btnClearLog_Click;
             // 
+            // btnExport
+            // 
+            btnExport.Location = new Point(3, 32);
+            btnExport.Name = "btnExport";
+            btnExport.Size = new Size(75, 23);
+            btnExport.TabIndex = 2;
+            btnExport.Text = "E&xport";
+            btnExport.UseVisualStyleBackColor = true;
+            btnExport.Click += btnExport_Click;
+            // 
             // lstLog
             // 
             lstLog.Dock = DockStyle.Fill;
@@ -184,6 +198,7 @@
             tblLiveView.ColumnCount = 2;
             tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tblLiveView.Controls.Add(label5, 0, 4);
             tblLiveView.Controls.Add(label4, 0, 3);
             tblLiveView.Controls.Add(label3, 0, 2);
             tblLiveView.Controls.Add(label2, 0, 1);
@@ -192,14 +207,16 @@
             tblLiveView.Controls.Add(lblPressure, 1, 1);
             tblLiveView.Controls.Add(lblBatteryVoltage, 1, 3);
             tblLiveView.Controls.Add(lblAltitude, 1, 2);
+            tblLiveView.Controls.Add(lblAcceleration, 1, 4);
             tblLiveView.Dock = DockStyle.Fill;
             tblLiveView.Location = new Point(3, 19);
             tblLiveView.Name = "tblLiveView";
-            tblLiveView.RowCount = 4;
+            tblLiveView.RowCount = 5;
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle());
+            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tblLiveView.Size = new Size(245, 341);
             tblLiveView.TabIndex = 0;
             // 
@@ -279,6 +296,8 @@
             // 
             tabGraphs.Controls.Add(tabTemperature);
             tabGraphs.Controls.Add(tabBattery);
+            tabGraphs.Controls.Add(tabPressureAndAltityde);
+            tabGraphs.Controls.Add(tabAcceleration);
             tabGraphs.Dock = DockStyle.Fill;
             tabGraphs.Location = new Point(200, 24);
             tabGraphs.Name = "tabGraphs";
@@ -293,7 +312,7 @@
             tabTemperature.Padding = new Padding(3);
             tabTemperature.Size = new Size(609, 335);
             tabTemperature.TabIndex = 0;
-            tabTemperature.Text = "Temperature, altitude and pressure";
+            tabTemperature.Text = "Temperature";
             tabTemperature.UseVisualStyleBackColor = true;
             // 
             // tabBattery
@@ -305,6 +324,26 @@
             tabBattery.TabIndex = 1;
             tabBattery.Text = "Battery";
             tabBattery.UseVisualStyleBackColor = true;
+            // 
+            // tabPressureAndAltityde
+            // 
+            tabPressureAndAltityde.Location = new Point(4, 24);
+            tabPressureAndAltityde.Name = "tabPressureAndAltityde";
+            tabPressureAndAltityde.Padding = new Padding(3);
+            tabPressureAndAltityde.Size = new Size(609, 335);
+            tabPressureAndAltityde.TabIndex = 2;
+            tabPressureAndAltityde.Text = "Pressure and altitude";
+            tabPressureAndAltityde.UseVisualStyleBackColor = true;
+            // 
+            // tabAcceleration
+            // 
+            tabAcceleration.Location = new Point(4, 24);
+            tabAcceleration.Name = "tabAcceleration";
+            tabAcceleration.Padding = new Padding(3);
+            tabAcceleration.Size = new Size(609, 335);
+            tabAcceleration.TabIndex = 3;
+            tabAcceleration.Text = "Acceleration";
+            tabAcceleration.UseVisualStyleBackColor = true;
             // 
             // mainMenu
             // 
@@ -342,7 +381,7 @@
             devicesToolStripMenuItem.CheckState = CheckState.Checked;
             devicesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { refreshToolStripMenuItem, connectToolStripMenuItem });
             devicesToolStripMenuItem.Name = "devicesToolStripMenuItem";
-            devicesToolStripMenuItem.Size = new Size(180, 22);
+            devicesToolStripMenuItem.Size = new Size(122, 22);
             devicesToolStripMenuItem.Text = "&Devices";
             devicesToolStripMenuItem.Click += devicesToolStripMenuItem_Click;
             // 
@@ -366,14 +405,14 @@
             logToolStripMenuItem.CheckState = CheckState.Checked;
             logToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clearToolStripMenuItem });
             logToolStripMenuItem.Name = "logToolStripMenuItem";
-            logToolStripMenuItem.Size = new Size(180, 22);
+            logToolStripMenuItem.Size = new Size(122, 22);
             logToolStripMenuItem.Text = "&Log";
             logToolStripMenuItem.Click += logToolStripMenuItem_Click;
             // 
             // clearToolStripMenuItem
             // 
             clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            clearToolStripMenuItem.Size = new Size(180, 22);
+            clearToolStripMenuItem.Size = new Size(101, 22);
             clearToolStripMenuItem.Text = "&Clear";
             clearToolStripMenuItem.Click += clearToolStripMenuItem_Click;
             // 
@@ -382,7 +421,7 @@
             liveViewToolStripMenuItem.Checked = true;
             liveViewToolStripMenuItem.CheckState = CheckState.Checked;
             liveViewToolStripMenuItem.Name = "liveViewToolStripMenuItem";
-            liveViewToolStripMenuItem.Size = new Size(180, 22);
+            liveViewToolStripMenuItem.Size = new Size(122, 22);
             liveViewToolStripMenuItem.Text = "Li&ve view";
             liveViewToolStripMenuItem.Click += liveViewToolStripMenuItem_Click;
             // 
@@ -391,19 +430,27 @@
             graphsToolStripMenuItem.Checked = true;
             graphsToolStripMenuItem.CheckState = CheckState.Checked;
             graphsToolStripMenuItem.Name = "graphsToolStripMenuItem";
-            graphsToolStripMenuItem.Size = new Size(180, 22);
+            graphsToolStripMenuItem.Size = new Size(122, 22);
             graphsToolStripMenuItem.Text = "&Graphs";
             graphsToolStripMenuItem.Click += graphsToolStripMenuItem_Click;
             // 
-            // btnExport
+            // label5
             // 
-            btnExport.Location = new Point(3, 32);
-            btnExport.Name = "btnExport";
-            btnExport.Size = new Size(75, 23);
-            btnExport.TabIndex = 2;
-            btnExport.Text = "E&xport";
-            btnExport.UseVisualStyleBackColor = true;
-            btnExport.Click += btnExport_Click;
+            label5.AutoSize = true;
+            label5.Location = new Point(3, 60);
+            label5.Name = "label5";
+            label5.Size = new Size(76, 15);
+            label5.TabIndex = 8;
+            label5.Text = "Acceleration:";
+            // 
+            // lblAcceleration
+            // 
+            lblAcceleration.AutoSize = true;
+            lblAcceleration.Location = new Point(125, 60);
+            lblAcceleration.Name = "lblAcceleration";
+            lblAcceleration.Size = new Size(45, 15);
+            lblAcceleration.TabIndex = 9;
+            lblAcceleration.Text = "Not set";
             // 
             // GroundStation
             // 
@@ -472,5 +519,9 @@
         private FlowLayoutPanel flowLayoutPanel2;
         private ToolStripMenuItem clearToolStripMenuItem;
         private Button btnExport;
+        private TabPage tabPressureAndAltityde;
+        private TabPage tabAcceleration;
+        private Label label5;
+        private Label lblAcceleration;
     }
 }

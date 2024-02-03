@@ -72,9 +72,9 @@ namespace CanSatInterface
                     Thread.Sleep(100);
 
                     //AX:{:.3f} AY:{:.3f} AZ:{:.3f} P:{} R:{} T:{}
-                    ax += r.NextDouble();
-                    ay += r.NextDouble();
-                    az += r.NextDouble();
+                    ax += r.NextDouble() - .5;
+                    ay += r.NextDouble() - .5;
+                    az += r.NextDouble() - .5;
                     thisDevice.ProcessData($"AX: {ax:f2}");
                     thisDevice.ProcessData($"AY: {ay:f2}");
                     thisDevice.ProcessData($"AZ: {az:f2}");

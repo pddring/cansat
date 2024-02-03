@@ -152,6 +152,19 @@ namespace CanSatInterface
         }
 
         /// <summary>
+        /// Gets an array of acceleration readings from the IMU
+        /// </summary>
+        /// <returns>3d array of X, Y and Z readings in m/s²</returns>
+        public double[] getAcceleration()
+        {
+            double[] a = new double[3]
+            {
+                Values["AX"], Values["AY"], Values["AZ"]
+            };
+            return a;
+        }
+
+        /// <summary>
         /// Gets the current temperature
         /// </summary>
         /// <returns>Temperature in degrees C</returns>
