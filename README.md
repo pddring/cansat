@@ -1,5 +1,5 @@
 # Fulford Interstellar Robotics & Space Team CanSat
-This is the code for all of the subprojects linked to the FIRST CanSat projcet
+This is the code for all of the subprojects linked to the FIRST CanSat project
 
 ## CanSat
 CanSat a drinks can sized satellite that uses a raspberry pi pico to transmite live measurements after being launched by a rocket whilst it descends using a parachute.
