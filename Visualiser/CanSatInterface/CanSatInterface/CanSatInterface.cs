@@ -154,7 +154,7 @@ namespace CanSatInterface
         /// <summary>
         /// Gets an array of acceleration readings from the IMU
         /// </summary>
-        /// <returns>3d array of X, Y and Z readings in m/s²</returns>
+        /// <returns>Array of X, Y and Z readings in m/s²</returns>
         public double[] getAcceleration()
         {
             double[] a = new double[3]
@@ -162,6 +162,19 @@ namespace CanSatInterface
                 Values["AX"], Values["AY"], Values["AZ"]
             };
             return a;
+        }
+
+        /// <summary>
+        /// Gets an array of magnetometer readings from the IMU
+        /// </summary>
+        /// <returns>Array of X, Y and Z readings in uT</returns>
+        public double[] getMagneticFieldStrength()
+        {
+            double[] m = new double[3]
+            {
+                Values["MX"], Values["MY"], Values["MZ"]
+            };
+            return m;
         }
 
         /// <summary>

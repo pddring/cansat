@@ -34,6 +34,7 @@ namespace GroundStationUI
         ScottPlot.WinForms.FormsPlot batteryPlot;
         ScottPlot.WinForms.FormsPlot pressureAndAltitudePlot;
         ScottPlot.WinForms.FormsPlot accelerationPlot;
+        ScottPlot.WinForms.FormsPlot magneticFieldPlot;
 
 
         DataLogger tempLogger;
@@ -43,6 +44,9 @@ namespace GroundStationUI
         DataLogger accelerationXLogger;
         DataLogger accelerationYLogger;
         DataLogger accelerationZLogger;
+        DataLogger magneticFieldXLogger;
+        DataLogger magneticFieldYLogger;
+        DataLogger magneticFieldZLogger;
 
         private void GroundStation_Load(object sender, EventArgs e)
         {
@@ -104,6 +108,33 @@ namespace GroundStationUI
             };
             LegendItem[] items = {xLeg, yLeg, zLeg};
             accelerationPlot.Plot.ShowLegend(items);
+
+            // magnetic field graph
+            magneticFieldPlot = new ScottPlot.WinForms.FormsPlot();
+            tabMagneticField.Controls.Add(magneticFieldPlot);
+            magneticFieldPlot.Dock = DockStyle.Fill;
+            magneticFieldXLogger = magneticFieldPlot.Plot.Add.DataLogger();
+            magneticFieldYLogger = magneticFieldPlot.Plot.Add.DataLogger();
+            magneticFieldZLogger = magneticFieldPlot.Plot.Add.DataLogger();
+            magneticFieldPlot.Plot.Axes.Bottom.Label.Text = "Time (s)";
+            magneticFieldPlot.Plot.Axes.Left.Label.Text = ("Magnetic Field Strength (µT)");
+
+            LegendItem[] magLegends = {
+                new LegendItem() {
+                    Label = "X Direction",
+                    LineColor = magneticFieldXLogger.Color
+                }, 
+                new LegendItem()
+                {
+                    Label = "Y Direction",
+                    LineColor = magneticFieldYLogger.Color
+                }, 
+                new LegendItem() {
+                    Label = "Z Direction",
+                    LineColor = magneticFieldZLogger.Color
+                }
+            };
+            magneticFieldPlot.Plot.ShowLegend(magLegends);
 
             // battery graph
             batteryPlot = new ScottPlot.WinForms.FormsPlot();
@@ -169,6 +200,10 @@ namespace GroundStationUI
                                     lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
                                     accelerationPlot.Refresh();
                                     break;
+
+                                case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthX:
+                                    a = device.getMagneticFieldStrength();
+                                    /// TODO
 
                                 case CanSatInterface.CanSatInterface.DataLabel.Temperature:
                                     double temperature = device.getTemperature();

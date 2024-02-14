@@ -40,6 +40,7 @@
             lstLog = new ListBox();
             groupLiveView = new GroupBox();
             tblLiveView = new TableLayoutPanel();
+            label5 = new Label();
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
@@ -48,6 +49,7 @@
             lblPressure = new Label();
             lblBatteryVoltage = new Label();
             lblAltitude = new Label();
+            lblAcceleration = new Label();
             tabGraphs = new TabControl();
             tabTemperature = new TabPage();
             tabBattery = new TabPage();
@@ -64,8 +66,7 @@
             clearToolStripMenuItem = new ToolStripMenuItem();
             liveViewToolStripMenuItem = new ToolStripMenuItem();
             graphsToolStripMenuItem = new ToolStripMenuItem();
-            label5 = new Label();
-            lblAcceleration = new Label();
+            tabMagneticField = new TabPage();
             groupDevices.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             groupLog.SuspendLayout();
@@ -220,6 +221,15 @@
             tblLiveView.Size = new Size(245, 341);
             tblLiveView.TabIndex = 0;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(3, 60);
+            label5.Name = "label5";
+            label5.Size = new Size(76, 15);
+            label5.TabIndex = 8;
+            label5.Text = "Acceleration:";
+            // 
             // label4
             // 
             label4.AutoSize = true;
@@ -292,12 +302,22 @@
             lblAltitude.TabIndex = 4;
             lblAltitude.Text = "Not set";
             // 
+            // lblAcceleration
+            // 
+            lblAcceleration.AutoSize = true;
+            lblAcceleration.Location = new Point(125, 60);
+            lblAcceleration.Name = "lblAcceleration";
+            lblAcceleration.Size = new Size(45, 15);
+            lblAcceleration.TabIndex = 9;
+            lblAcceleration.Text = "Not set";
+            // 
             // tabGraphs
             // 
             tabGraphs.Controls.Add(tabTemperature);
             tabGraphs.Controls.Add(tabBattery);
             tabGraphs.Controls.Add(tabPressureAndAltityde);
             tabGraphs.Controls.Add(tabAcceleration);
+            tabGraphs.Controls.Add(tabMagneticField);
             tabGraphs.Dock = DockStyle.Fill;
             tabGraphs.Location = new Point(200, 24);
             tabGraphs.Name = "tabGraphs";
@@ -434,23 +454,15 @@
             graphsToolStripMenuItem.Text = "&Graphs";
             graphsToolStripMenuItem.Click += graphsToolStripMenuItem_Click;
             // 
-            // label5
+            // tabMagneticField
             // 
-            label5.AutoSize = true;
-            label5.Location = new Point(3, 60);
-            label5.Name = "label5";
-            label5.Size = new Size(76, 15);
-            label5.TabIndex = 8;
-            label5.Text = "Acceleration:";
-            // 
-            // lblAcceleration
-            // 
-            lblAcceleration.AutoSize = true;
-            lblAcceleration.Location = new Point(125, 60);
-            lblAcceleration.Name = "lblAcceleration";
-            lblAcceleration.Size = new Size(45, 15);
-            lblAcceleration.TabIndex = 9;
-            lblAcceleration.Text = "Not set";
+            tabMagneticField.Location = new Point(4, 24);
+            tabMagneticField.Name = "tabMagneticField";
+            tabMagneticField.Padding = new Padding(3);
+            tabMagneticField.Size = new Size(609, 335);
+            tabMagneticField.TabIndex = 4;
+            tabMagneticField.Text = "Magnetic field";
+            tabMagneticField.UseVisualStyleBackColor = true;
             // 
             // GroundStation
             // 
@@ -523,5 +535,6 @@
         private TabPage tabAcceleration;
         private Label label5;
         private Label lblAcceleration;
+        private TabPage tabMagneticField;
     }
 }
