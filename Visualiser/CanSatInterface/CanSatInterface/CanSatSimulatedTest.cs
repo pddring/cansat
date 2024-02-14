@@ -86,9 +86,9 @@ namespace CanSatInterface
                     Thread.Sleep(100);
 
                     //MX:{:.3f} MY:{:.3f} MZ:{:.3f} P:{} R:{} T:{} 
-                    mx += r.NextDouble();
-                    my += r.NextDouble();
-                    mz += r.NextDouble();
+                    mx += r.NextDouble() - .5;
+                    my += r.NextDouble() - .5;
+                    mz += r.NextDouble() - .5;
                     thisDevice.ProcessData($"MX: {mx:f2}");
                     thisDevice.ProcessData($"MY: {my:f2}");
                     thisDevice.ProcessData($"MZ: {mz:f2}");

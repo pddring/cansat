@@ -174,7 +174,7 @@ namespace GroundStationUI
                     double[] a = new double[3];
                     try
                     {
-                        lstLog.Invoke(() =>
+                        lstLog.Invoke((Delegate)(() =>
                         {
                             lstLog.Items.Add(data);
                             double time = device.getRunningTime();
@@ -203,7 +203,24 @@ namespace GroundStationUI
 
                                 case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthX:
                                     a = device.getMagneticFieldStrength();
-                                    /// TODO
+                                    magneticFieldXLogger.Add(time, a[0]);
+                                    lblMagneticField.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} µT";
+                                    magneticFieldPlot.Refresh();
+                                    break;
+
+                                case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthY:
+                                    a = device.getMagneticFieldStrength();
+                                    magneticFieldYLogger.Add(time, a[1]);
+                                    lblMagneticField.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} µT";
+                                    magneticFieldPlot.Refresh();
+                                    break;
+
+                                case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthZ:
+                                    a = device.getMagneticFieldStrength();
+                                    magneticFieldZLogger.Add(time, a[2]);
+                                    lblMagneticField.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} µT";
+                                    magneticFieldPlot.Refresh();
+                                    break;
 
                                 case CanSatInterface.CanSatInterface.DataLabel.Temperature:
                                     double temperature = device.getTemperature();
@@ -235,7 +252,7 @@ namespace GroundStationUI
                             }
                             lstLog.SelectedIndex = lstLog.Items.Count - 1;
 
-                        });
+                        }));
                     }
                     catch (Exception e)
                     {

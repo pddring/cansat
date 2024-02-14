@@ -55,6 +55,7 @@
             tabBattery = new TabPage();
             tabPressureAndAltityde = new TabPage();
             tabAcceleration = new TabPage();
+            tabMagneticField = new TabPage();
             mainMenu = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
@@ -66,7 +67,8 @@
             clearToolStripMenuItem = new ToolStripMenuItem();
             liveViewToolStripMenuItem = new ToolStripMenuItem();
             graphsToolStripMenuItem = new ToolStripMenuItem();
-            tabMagneticField = new TabPage();
+            label6 = new Label();
+            lblMagneticField = new Label();
             groupDevices.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             groupLog.SuspendLayout();
@@ -199,6 +201,7 @@
             tblLiveView.ColumnCount = 2;
             tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tblLiveView.Controls.Add(label6, 0, 5);
             tblLiveView.Controls.Add(label5, 0, 4);
             tblLiveView.Controls.Add(label4, 0, 3);
             tblLiveView.Controls.Add(label3, 0, 2);
@@ -209,14 +212,16 @@
             tblLiveView.Controls.Add(lblBatteryVoltage, 1, 3);
             tblLiveView.Controls.Add(lblAltitude, 1, 2);
             tblLiveView.Controls.Add(lblAcceleration, 1, 4);
+            tblLiveView.Controls.Add(lblMagneticField, 1, 5);
             tblLiveView.Dock = DockStyle.Fill;
             tblLiveView.Location = new Point(3, 19);
             tblLiveView.Name = "tblLiveView";
-            tblLiveView.RowCount = 5;
+            tblLiveView.RowCount = 6;
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle());
+            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tblLiveView.Size = new Size(245, 341);
             tblLiveView.TabIndex = 0;
@@ -365,6 +370,16 @@
             tabAcceleration.Text = "Acceleration";
             tabAcceleration.UseVisualStyleBackColor = true;
             // 
+            // tabMagneticField
+            // 
+            tabMagneticField.Location = new Point(4, 24);
+            tabMagneticField.Name = "tabMagneticField";
+            tabMagneticField.Padding = new Padding(3);
+            tabMagneticField.Size = new Size(609, 335);
+            tabMagneticField.TabIndex = 4;
+            tabMagneticField.Text = "Magnetic field";
+            tabMagneticField.UseVisualStyleBackColor = true;
+            // 
             // mainMenu
             // 
             mainMenu.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, viewToolStripMenuItem });
@@ -454,15 +469,23 @@
             graphsToolStripMenuItem.Text = "&Graphs";
             graphsToolStripMenuItem.Click += graphsToolStripMenuItem_Click;
             // 
-            // tabMagneticField
+            // label6
             // 
-            tabMagneticField.Location = new Point(4, 24);
-            tabMagneticField.Name = "tabMagneticField";
-            tabMagneticField.Padding = new Padding(3);
-            tabMagneticField.Size = new Size(609, 335);
-            tabMagneticField.TabIndex = 4;
-            tabMagneticField.Text = "Magnetic field";
-            tabMagneticField.UseVisualStyleBackColor = true;
+            label6.AutoSize = true;
+            label6.Location = new Point(3, 80);
+            label6.Name = "label6";
+            label6.Size = new Size(88, 15);
+            label6.TabIndex = 10;
+            label6.Text = "Magnetic Field:";
+            // 
+            // lblMagneticField
+            // 
+            lblMagneticField.AutoSize = true;
+            lblMagneticField.Location = new Point(125, 80);
+            lblMagneticField.Name = "lblMagneticField";
+            lblMagneticField.Size = new Size(45, 15);
+            lblMagneticField.TabIndex = 11;
+            lblMagneticField.Text = "Not set";
             // 
             // GroundStation
             // 
@@ -536,5 +559,7 @@
         private Label label5;
         private Label lblAcceleration;
         private TabPage tabMagneticField;
+        private Label label6;
+        private Label lblMagneticField;
     }
 }
