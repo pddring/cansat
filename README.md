@@ -10,7 +10,7 @@ Visualiser is the desktop application that will run on the laptop to visualise a
 
 
 ## CanSat
-CanSat a drinks can sized satellite that uses a raspberry pi pico to transmite live measurements after being launched by a rocket whilst it descends using a parachute.
+CanSat a drinks can sized satellite that uses a raspberry pi pico to transmit live measurements after being launched by a rocket whilst it descends using a parachute.
 
 ### Instructions:
 1) Download the CircuitPython raspberry pi pico firmware from: https://circuitpython.org/board/raspberry_pi_pico/
