@@ -154,14 +154,18 @@ namespace GroundStationUI
             {
                 connected = false;
                 btnConnect.Text = "&Connect";
-                if (lstDevices.SelectedItem != null) { device.Disconnect(); }
+                if (lstDevices.SelectedItem != null) 
+                { 
+                    device.Disconnect(); 
+                }
             }
             else
             {
                 connected = true;
-                btnConnect.Text = "Dis&connect";
+                
                 if (lstDevices.SelectedItem != null)
                 {
+                    btnConnect.Text = "Dis&connect";
                     string deviceName = lstDevices.SelectedItem.ToString();
 
                     if (deviceName == SIMULATED_DEVICE_NAME)
