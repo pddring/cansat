@@ -154,111 +154,115 @@ namespace GroundStationUI
             {
                 connected = false;
                 btnConnect.Text = "&Connect";
-                device.Disconnect();
+                if (lstDevices.SelectedItem != null) { device.Disconnect(); }
             }
             else
             {
                 connected = true;
                 btnConnect.Text = "Dis&connect";
-                string deviceName = lstDevices.SelectedItem.ToString();
-                if (deviceName == SIMULATED_DEVICE_NAME)
+                if (lstDevices.SelectedItem != null)
                 {
-                    device = new CanSatInterface.CanSatSimulatedTest(deviceName);
-                }
-                else
-                {
-                    device = new CanSatInterface.CanSat(deviceName);
-                }
-                device.Connect((string data, CanSatInterface.CanSat.DataLabel lastUpdated) =>
-                {
-                    double[] a = new double[3];
-                    try
+                    string deviceName = lstDevices.SelectedItem.ToString();
+
+                    if (deviceName == SIMULATED_DEVICE_NAME)
                     {
-                        lstLog.Invoke((Delegate)(() =>
+                        device = new CanSatInterface.CanSatSimulatedTest(deviceName);
+                    }
+                    else
+                    {
+                        device = new CanSatInterface.CanSat(deviceName);
+                    }
+                    device.Connect((string data, CanSatInterface.CanSat.DataLabel lastUpdated) =>
+                    {
+                        double[] a = new double[3];
+                        try
                         {
-                            lstLog.Items.Add(data);
-                            double time = device.getRunningTime();
-                            switch (lastUpdated)
+                            lstLog.Invoke((Delegate)(() =>
                             {
-                                case CanSatInterface.CanSatInterface.DataLabel.AccelerationX:
-                                    a = device.getAcceleration();
-                                    accelerationXLogger.Add(time, a[0]);
-                                    lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
-                                    accelerationPlot.Refresh();
-                                    break;
+                                lstLog.Items.Add(data);
+                                double time = device.getRunningTime();
+                                switch (lastUpdated)
+                                {
+                                    case CanSatInterface.CanSatInterface.DataLabel.AccelerationX:
+                                        a = device.getAcceleration();
+                                        accelerationXLogger.Add(time, a[0]);
+                                        lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
+                                        accelerationPlot.Refresh();
+                                        break;
 
-                                case CanSatInterface.CanSatInterface.DataLabel.AccelerationY:
-                                    a = device.getAcceleration();
-                                    accelerationYLogger.Add(time, a[1]);
-                                    lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
-                                    accelerationPlot.Refresh();
-                                    break;
+                                    case CanSatInterface.CanSatInterface.DataLabel.AccelerationY:
+                                        a = device.getAcceleration();
+                                        accelerationYLogger.Add(time, a[1]);
+                                        lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
+                                        accelerationPlot.Refresh();
+                                        break;
 
-                                case CanSatInterface.CanSatInterface.DataLabel.AccelerationZ:
-                                    a = device.getAcceleration();
-                                    accelerationZLogger.Add(time, a[2]);
-                                    lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
-                                    accelerationPlot.Refresh();
-                                    break;
+                                    case CanSatInterface.CanSatInterface.DataLabel.AccelerationZ:
+                                        a = device.getAcceleration();
+                                        accelerationZLogger.Add(time, a[2]);
+                                        lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
+                                        accelerationPlot.Refresh();
+                                        break;
 
-                                case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthX:
-                                    a = device.getMagneticFieldStrength();
-                                    magneticFieldXLogger.Add(time, a[0]);
-                                    lblMagneticField.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} µT";
-                                    magneticFieldPlot.Refresh();
-                                    break;
+                                    case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthX:
+                                        a = device.getMagneticFieldStrength();
+                                        magneticFieldXLogger.Add(time, a[0]);
+                                        lblMagneticField.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} µT";
+                                        magneticFieldPlot.Refresh();
+                                        break;
 
-                                case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthY:
-                                    a = device.getMagneticFieldStrength();
-                                    magneticFieldYLogger.Add(time, a[1]);
-                                    lblMagneticField.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} µT";
-                                    magneticFieldPlot.Refresh();
-                                    break;
+                                    case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthY:
+                                        a = device.getMagneticFieldStrength();
+                                        magneticFieldYLogger.Add(time, a[1]);
+                                        lblMagneticField.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} µT";
+                                        magneticFieldPlot.Refresh();
+                                        break;
 
-                                case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthZ:
-                                    a = device.getMagneticFieldStrength();
-                                    magneticFieldZLogger.Add(time, a[2]);
-                                    lblMagneticField.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} µT";
-                                    magneticFieldPlot.Refresh();
-                                    break;
+                                    case CanSatInterface.CanSatInterface.DataLabel.MagneticFieldStrengthZ:
+                                        a = device.getMagneticFieldStrength();
+                                        magneticFieldZLogger.Add(time, a[2]);
+                                        lblMagneticField.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} µT";
+                                        magneticFieldPlot.Refresh();
+                                        break;
 
-                                case CanSatInterface.CanSatInterface.DataLabel.Temperature:
-                                    double temperature = device.getTemperature();
-                                    lblTemperature.Text = $"{temperature}'C";
-                                    tempLogger.Add(time, temperature);
-                                    tempPlot.Refresh();
-                                    break;
+                                    case CanSatInterface.CanSatInterface.DataLabel.Temperature:
+                                        double temperature = device.getTemperature();
+                                        lblTemperature.Text = $"{temperature}'C";
+                                        tempLogger.Add(time, temperature);
+                                        tempPlot.Refresh();
+                                        break;
 
-                                case CanSatInterface.CanSatInterface.DataLabel.Altitude:
-                                    double altitude = device.getAltitude();
-                                    lblAltitude.Text = $"{altitude:f2}m";
-                                    altitudeLogger.Add(time, altitude);
-                                    pressureAndAltitudePlot.Refresh();
-                                    break;
+                                    case CanSatInterface.CanSatInterface.DataLabel.Altitude:
+                                        double altitude = device.getAltitude();
+                                        lblAltitude.Text = $"{altitude:f2}m";
+                                        altitudeLogger.Add(time, altitude);
+                                        pressureAndAltitudePlot.Refresh();
+                                        break;
 
-                                case CanSatInterface.CanSatInterface.DataLabel.Pressure:
-                                    double pressure = device.getPressure();
-                                    lblPressure.Text = $"{pressure:f2}hPa";
-                                    pressureLogger.Add(time, pressure);
-                                    pressureAndAltitudePlot.Refresh();
-                                    break;
+                                    case CanSatInterface.CanSatInterface.DataLabel.Pressure:
+                                        double pressure = device.getPressure();
+                                        lblPressure.Text = $"{pressure:f2}hPa";
+                                        pressureLogger.Add(time, pressure);
+                                        pressureAndAltitudePlot.Refresh();
+                                        break;
 
-                                case CanSatInterface.CanSatInterface.DataLabel.BatteryVoltage:
-                                    double voltage = device.getBatteryVoltage();
-                                    lblBatteryVoltage.Text = $"{voltage:f2}v";
-                                    batteryVoltageLogger.Add(time, voltage);
-                                    batteryPlot.Refresh();
-                                    break;
-                            }
-                            lstLog.SelectedIndex = lstLog.Items.Count - 1;
+                                    case CanSatInterface.CanSatInterface.DataLabel.BatteryVoltage:
+                                        double voltage = device.getBatteryVoltage();
+                                        lblBatteryVoltage.Text = $"{voltage:f2}v";
+                                        batteryVoltageLogger.Add(time, voltage);
+                                        batteryPlot.Refresh();
+                                        break;
+                                }
+                                lstLog.SelectedIndex = lstLog.Items.Count - 1;
 
-                        }));
-                    }
-                    catch (Exception e)
-                    {
-                        lstLog.Items.Add("Error: " + e.Message);
-                    }
-                });
+                            }));
+                        }
+                        catch (Exception e)
+                        {
+                            lstLog.Items.Add("Error: " + e.Message);
+                        }
+                    });
+                }
             }
         }
 
