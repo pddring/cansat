@@ -48,9 +48,19 @@ namespace CanSatInterface
                 TimeSpan s = DateTime.Now - thisDevice.startTime;
                 if(thisDevice.externalHandler != null)
                 {
-                    thisDevice.ProcessData($"Fix: {0}");
+                    thisDevice.ProcessData($"Fix: {1}");
                     thisDevice.ProcessData($"3D: {0}");
-                    thisDevice.ProcessData($"Sat: {0}");
+                    thisDevice.ProcessData($"Sat: {7}");
+                    thisDevice.ProcessData($"P: {p}");
+                    thisDevice.ProcessData($"R: {remote}");
+                    thisDevice.ProcessData($"T: {s.TotalSeconds:f2}");
+                    p++;
+                    s = DateTime.Now - thisDevice.startTime;
+                    Thread.Sleep(100);
+
+
+                    thisDevice.ProcessData($"Lat: {53.96247833940888}");
+                    thisDevice.ProcessData($"Lng: {-1.0662814696138856}");
                     thisDevice.ProcessData($"P: {p}");
                     thisDevice.ProcessData($"R: {remote}");
                     thisDevice.ProcessData($"T: {s.TotalSeconds:f2}");

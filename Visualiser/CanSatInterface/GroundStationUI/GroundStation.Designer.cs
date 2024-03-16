@@ -40,6 +40,7 @@
             lstLog = new ListBox();
             groupLiveView = new GroupBox();
             tblLiveView = new TableLayoutPanel();
+            label6 = new Label();
             label5 = new Label();
             label4 = new Label();
             label3 = new Label();
@@ -50,12 +51,15 @@
             lblBatteryVoltage = new Label();
             lblAltitude = new Label();
             lblAcceleration = new Label();
+            lblMagneticField = new Label();
             tabGraphs = new TabControl();
             tabTemperature = new TabPage();
             tabBattery = new TabPage();
             tabPressureAndAltityde = new TabPage();
             tabAcceleration = new TabPage();
             tabMagneticField = new TabPage();
+            tabMap = new TabPage();
+            btnOpenWeb = new Button();
             mainMenu = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
@@ -67,8 +71,8 @@
             clearToolStripMenuItem = new ToolStripMenuItem();
             liveViewToolStripMenuItem = new ToolStripMenuItem();
             graphsToolStripMenuItem = new ToolStripMenuItem();
-            label6 = new Label();
-            lblMagneticField = new Label();
+            printDialog1 = new PrintDialog();
+            folderBrowserDialog1 = new FolderBrowserDialog();
             groupDevices.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             groupLog.SuspendLayout();
@@ -76,6 +80,7 @@
             groupLiveView.SuspendLayout();
             tblLiveView.SuspendLayout();
             tabGraphs.SuspendLayout();
+            tabMap.SuspendLayout();
             mainMenu.SuspendLayout();
             SuspendLayout();
             // 
@@ -226,6 +231,15 @@
             tblLiveView.Size = new Size(245, 341);
             tblLiveView.TabIndex = 0;
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(3, 80);
+            label6.Name = "label6";
+            label6.Size = new Size(88, 15);
+            label6.TabIndex = 10;
+            label6.Text = "Magnetic Field:";
+            // 
             // label5
             // 
             label5.AutoSize = true;
@@ -316,6 +330,15 @@
             lblAcceleration.TabIndex = 9;
             lblAcceleration.Text = "Not set";
             // 
+            // lblMagneticField
+            // 
+            lblMagneticField.AutoSize = true;
+            lblMagneticField.Location = new Point(125, 80);
+            lblMagneticField.Name = "lblMagneticField";
+            lblMagneticField.Size = new Size(45, 15);
+            lblMagneticField.TabIndex = 11;
+            lblMagneticField.Text = "Not set";
+            // 
             // tabGraphs
             // 
             tabGraphs.Controls.Add(tabTemperature);
@@ -323,6 +346,7 @@
             tabGraphs.Controls.Add(tabPressureAndAltityde);
             tabGraphs.Controls.Add(tabAcceleration);
             tabGraphs.Controls.Add(tabMagneticField);
+            tabGraphs.Controls.Add(tabMap);
             tabGraphs.Dock = DockStyle.Fill;
             tabGraphs.Location = new Point(200, 24);
             tabGraphs.Name = "tabGraphs";
@@ -379,6 +403,27 @@
             tabMagneticField.TabIndex = 4;
             tabMagneticField.Text = "Magnetic field";
             tabMagneticField.UseVisualStyleBackColor = true;
+            // 
+            // tabMap
+            // 
+            tabMap.Controls.Add(btnOpenWeb);
+            tabMap.Location = new Point(4, 24);
+            tabMap.Name = "tabMap";
+            tabMap.Padding = new Padding(3);
+            tabMap.Size = new Size(609, 335);
+            tabMap.TabIndex = 5;
+            tabMap.Text = "Map";
+            tabMap.UseVisualStyleBackColor = true;
+            // 
+            // btnOpenWeb
+            // 
+            btnOpenWeb.Location = new Point(220, 156);
+            btnOpenWeb.Name = "btnOpenWeb";
+            btnOpenWeb.Size = new Size(169, 23);
+            btnOpenWeb.TabIndex = 2;
+            btnOpenWeb.Text = "Open Web Browser";
+            btnOpenWeb.UseVisualStyleBackColor = true;
+            btnOpenWeb.Click += btnOpenWeb_Click;
             // 
             // mainMenu
             // 
@@ -469,23 +514,13 @@
             graphsToolStripMenuItem.Text = "&Graphs";
             graphsToolStripMenuItem.Click += graphsToolStripMenuItem_Click;
             // 
-            // label6
+            // printDialog1
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(3, 80);
-            label6.Name = "label6";
-            label6.Size = new Size(88, 15);
-            label6.TabIndex = 10;
-            label6.Text = "Magnetic Field:";
+            printDialog1.UseEXDialog = true;
             // 
-            // lblMagneticField
+            // folderBrowserDialog1
             // 
-            lblMagneticField.AutoSize = true;
-            lblMagneticField.Location = new Point(125, 80);
-            lblMagneticField.Name = "lblMagneticField";
-            lblMagneticField.Size = new Size(45, 15);
-            lblMagneticField.TabIndex = 11;
-            lblMagneticField.Text = "Not set";
+            folderBrowserDialog1.HelpRequest += folderBrowserDialog1_HelpRequest;
             // 
             // GroundStation
             // 
@@ -512,6 +547,7 @@
             tblLiveView.ResumeLayout(false);
             tblLiveView.PerformLayout();
             tabGraphs.ResumeLayout(false);
+            tabMap.ResumeLayout(false);
             mainMenu.ResumeLayout(false);
             mainMenu.PerformLayout();
             ResumeLayout(false);
@@ -561,5 +597,9 @@
         private TabPage tabMagneticField;
         private Label label6;
         private Label lblMagneticField;
+        private TabPage tabMap;
+        private PrintDialog printDialog1;
+        private FolderBrowserDialog folderBrowserDialog1;
+        private Button btnOpenWeb;
     }
 }

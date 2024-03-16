@@ -1,13 +1,33 @@
+using OpenTK.Graphics.OpenGL4;
 using ScottPlot;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
 using System.IO.Ports;
+using System.Net;
+using System.Text;
 
 namespace GroundStationUI
 {
     public partial class GroundStation : Form
     {
         bool connected = false;
+
+        private void SendGPSLocation(CanSatInterface.GPSCoordinates gps)
+        {
+            using (WebClient client = new WebClient())
+            {
+                var p = new System.Collections.Specialized.NameValueCollection();
+                p.Add("cmd", "SET_LOCATION");
+                p.Add("key", "__C4nSaT__");
+                p.Add("lat", gps.Latitude.ToString());
+                p.Add("lng", gps.Longitude.ToString());
+
+                byte[] responsebytes = client.UploadValues("https://tools.withcode.uk/cansat/api.php", "POST", p);
+                string responsebody = Encoding.UTF8.GetString(responsebytes);
+            }
+
+        }
+
         const string SIMULATED_DEVICE_NAME = "Simulated CanSat test device";
         CanSatInterface.CanSatInterface device;
         public GroundStation()
@@ -50,6 +70,7 @@ namespace GroundStationUI
 
         private void GroundStation_Load(object sender, EventArgs e)
         {
+
             // temperature graph
             tempPlot = new ScottPlot.WinForms.FormsPlot();
             tabTemperature.Controls.Add(tempPlot);
@@ -106,7 +127,7 @@ namespace GroundStationUI
                 LineWidth = 2,
                 Label = "Z Direction"
             };
-            LegendItem[] items = {xLeg, yLeg, zLeg};
+            LegendItem[] items = { xLeg, yLeg, zLeg };
             accelerationPlot.Plot.ShowLegend(items);
 
             // magnetic field graph
@@ -123,12 +144,12 @@ namespace GroundStationUI
                 new LegendItem() {
                     Label = "X Direction",
                     LineColor = magneticFieldXLogger.Color
-                }, 
+                },
                 new LegendItem()
                 {
                     Label = "Y Direction",
                     LineColor = magneticFieldYLogger.Color
-                }, 
+                },
                 new LegendItem() {
                     Label = "Z Direction",
                     LineColor = magneticFieldZLogger.Color
@@ -154,15 +175,15 @@ namespace GroundStationUI
             {
                 connected = false;
                 btnConnect.Text = "&Connect";
-                if (lstDevices.SelectedItem != null) 
-                { 
-                    device.Disconnect(); 
+                if (lstDevices.SelectedItem != null)
+                {
+                    device.Disconnect();
                 }
             }
             else
             {
                 connected = true;
-                
+
                 if (lstDevices.SelectedItem != null)
                 {
                     btnConnect.Text = "Dis&connect";
@@ -179,6 +200,7 @@ namespace GroundStationUI
                     device.Connect((string data, CanSatInterface.CanSat.DataLabel lastUpdated) =>
                     {
                         double[] a = new double[3];
+                        CanSatInterface.GPSCoordinates gps = new CanSatInterface.GPSCoordinates();
                         try
                         {
                             lstLog.Invoke((Delegate)(() =>
@@ -187,6 +209,15 @@ namespace GroundStationUI
                                 double time = device.getRunningTime();
                                 switch (lastUpdated)
                                 {
+                                    case CanSatInterface.CanSatInterface.DataLabel.GPSLatitude:
+                                        gps = device.getGPSLocation();
+                                        SendGPSLocation(gps);
+                                        break;
+                                    case CanSatInterface.CanSatInterface.DataLabel.GPSLongitude:
+                                        gps = device.getGPSLocation();
+                                        SendGPSLocation(gps);
+                                        break;
+
                                     case CanSatInterface.CanSatInterface.DataLabel.AccelerationX:
                                         a = device.getAcceleration();
                                         accelerationXLogger.Add(time, a[0]);
@@ -353,10 +384,21 @@ namespace GroundStationUI
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.Title = "Export log file";
             dlg.Filter = "Text file|*.txt";
-            if(dlg.ShowDialog() == DialogResult.OK)
+            if (dlg.ShowDialog() == DialogResult.OK)
             {
                 ExportLog(dlg.FileName);
             }
         }
+
+        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnOpenWeb_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer", "https://tools.withcode.uk/cansat");
+        }
+
     }
 }

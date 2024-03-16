@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 
 namespace CanSatInterface
 {
+
+    public class GPSCoordinates
+    {
+        public double Latitude;
+        public double Longitude;
+    }
+
     public abstract class CanSatInterface
     {
         public enum DataLabel
@@ -21,6 +28,8 @@ namespace CanSatInterface
             GPS2DFix,
             GPSSatelliteCount,
             GPS3DFix,
+            GPSLatitude,
+            GPSLongitude,
             Pressure,
             Temperature,
             Altitude,
@@ -48,6 +57,9 @@ namespace CanSatInterface
             { "Fix", 0},  // GPS satellite fix
             { "Sat", 0},  // GPS satellite count
             { "3D", 0},   // 3d GPS satellite fix
+            { "Lat", 0}, // GPS Latitude
+            { "Lng", 0}, // GPS Longitude
+
 
             // Environment
             { "Press", 0},  // Air pressure (mb)
@@ -64,6 +76,14 @@ namespace CanSatInterface
         };
 
         protected ProcessData externalHandler;
+
+        public GPSCoordinates getGPSLocation()
+        {
+            GPSCoordinates gps = new GPSCoordinates();
+            gps.Latitude = Values["Lat"];
+            gps.Longitude = Values["Lng"];
+            return gps;
+        }
 
         public void ShowValues()
         {
@@ -112,6 +132,12 @@ namespace CanSatInterface
                         break;
                     case "3D":
                         lastUpdated = DataLabel.GPS3DFix;
+                        break;
+                    case "Lat":
+                        lastUpdated = DataLabel.GPSLatitude;
+                    break;
+                    case "Lng":
+                        lastUpdated = DataLabel.GPSLongitude;
                         break;
 
                     // Environment
