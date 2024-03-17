@@ -22,8 +22,9 @@ namespace GroundStationUI
                 p.Add("lat", gps.Latitude.ToString());
                 p.Add("lng", gps.Longitude.ToString());
 
-                byte[] responsebytes = client.UploadValues("https://tools.withcode.uk/cansat/api.php", "POST", p);
-                string responsebody = Encoding.UTF8.GetString(responsebytes);
+                /// TODO: async request should fix it
+                //byte[] responsebytes = client.UploadValues("https://tools.withcode.uk/cansat/api.php", "POST", p);
+                //string responsebody = Encoding.UTF8.GetString(responsebytes);
             }
 
         }
@@ -201,9 +202,10 @@ namespace GroundStationUI
                     {
                         double[] a = new double[3];
                         CanSatInterface.GPSCoordinates gps = new CanSatInterface.GPSCoordinates();
-                        try
+                        
+                        lstLog.Invoke((Delegate)(() =>
                         {
-                            lstLog.Invoke((Delegate)(() =>
+                            try
                             {
                                 lstLog.Items.Add(data);
                                 double time = device.getRunningTime();
@@ -290,12 +292,14 @@ namespace GroundStationUI
                                 }
                                 lstLog.SelectedIndex = lstLog.Items.Count - 1;
 
-                            }));
-                        }
-                        catch (Exception e)
-                        {
-                            lstLog.Items.Add("Error: " + e.Message);
-                        }
+                            }
+                            catch (Exception e)
+                            {
+                                lstLog.Items.Add("Error: " + e.Message);
+                            }
+                        }));
+
+                        
                     });
                 }
             }

@@ -73,7 +73,8 @@ class LogWriter:
                     values[label] = value
                     s = ""
                 except:
-                    print("Could not read", label)
+                    values[label] = 0.0
+                    s = ""
         return values
                 
 if __name__ == "__main__":
