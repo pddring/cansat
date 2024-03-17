@@ -38,7 +38,7 @@ import power
 import adafruit_gps
 import logger
 log = logger.LogWriter()
-
+DELAY = 0.05
 # set up GPS
 uart = busio.UART(board.GP0, board.GP1, baudrate=9600, timeout=30)
 gps = adafruit_gps.GPS(uart, debug=False)
@@ -75,7 +75,7 @@ spi_mosi = board.GP27
 spi_clk = board.GP26
 spi_miso = board.GP28
 spi_lora = busio.SPI(spi_clk, MOSI=spi_mosi, MISO=spi_miso)
-rfm9x = adafruit_rfm9x.RFM9x(spi_lora, cs_lora, reset_lora, 433.0, baudrate=1000000)
+rfm9x = adafruit_rfm9x.RFM9x(spi_lora, cs_lora, reset_lora, 433.0, baudrate=5000000)
 rfm9x.tx_power = 23
 
 led = digitalio.DigitalInOut(board.LED)
@@ -108,7 +108,7 @@ while True:
         data = log.process_values(bytearray(msg))
         log.write(data)
     packet_count += 1
-    time.sleep(0.01)
+    time.sleep(DELAY)
     
     if gps.fix_quality > 0:
         msg = "Lat:{} Lng:{} GPSAlt:{} P:{} R:{} T:{} ".format(gps.latitude,
@@ -123,7 +123,7 @@ while True:
             data = log.process_values(bytearray(msg))
             log.write(data)
         packet_count += 1
-    time.sleep(0.01)
+    time.sleep(DELAY)
     
     msg = "Temp:{:.2f} Press:{:.2f} Alt:{:.2f} P:{} R:{} T:{} ".format(sensor.temperature,
                                                             sensor.pressure,
@@ -137,7 +137,7 @@ while True:
         data = log.process_values(bytearray(msg))
         log.write(data)
     packet_count += 1
-    time.sleep(0.1)
+    time.sleep(DELAY)
     
     ax,ay,az = imu.acceleration
     msg = "AX:{:.3f} AY:{:.3f} AZ:{:.3f} P:{} R:{} T:{} ".format(ax, ay, az,
@@ -150,7 +150,7 @@ while True:
         data = log.process_values(bytearray(msg))
         log.write(data)
     packet_count += 1
-    time.sleep(0.01)
+    time.sleep(DELAY)
     
     mx,my,mz = imu.magnetic
     msg = "MX:{:.3f} MY:{:.3f} MZ:{:.3f} P:{} R:{} T:{} ".format(mx, my, mz,
@@ -163,7 +163,7 @@ while True:
         data = log.process_values(bytearray(msg))
         log.write(data)
     packet_count += 1
-    time.sleep(0.01)
+    time.sleep(DELAY)
     
     charging = 0
     if p.isCharging():
@@ -179,7 +179,7 @@ while True:
     packet_count += 1
     print(msg)
     
-    time.sleep(0.01)
+    time.sleep(DELAY)
     led.value = not led.value
 
 

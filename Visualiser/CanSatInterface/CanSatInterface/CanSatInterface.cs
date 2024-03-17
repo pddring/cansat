@@ -30,6 +30,7 @@ namespace CanSatInterface
             GPS3DFix,
             GPSLatitude,
             GPSLongitude,
+            GPSAltitude,
             Pressure,
             Temperature,
             Altitude,
@@ -59,6 +60,7 @@ namespace CanSatInterface
             { "3D", 0},   // 3d GPS satellite fix
             { "Lat", 0}, // GPS Latitude
             { "Lng", 0}, // GPS Longitude
+            { "GPSAlt", 0 }, // GPS Altitude
 
 
             // Environment
@@ -138,6 +140,9 @@ namespace CanSatInterface
                     break;
                     case "Lng":
                         lastUpdated = DataLabel.GPSLongitude;
+                        break;
+                    case "GPSAlt":
+                        lastUpdated = DataLabel.GPSAltitude;
                         break;
 
                     // Environment
