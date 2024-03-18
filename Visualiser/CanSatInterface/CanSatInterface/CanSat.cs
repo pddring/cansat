@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -22,13 +23,25 @@ namespace CanSatInterface
             port = new SerialPort(PortName, 115200, Parity.None, 8);
         }
 
-        
+
         public override void Connect(ProcessData OnDataReceived)
         {
             port.Open();
-            port.DataReceived += Port_DataReceived;
+            //port.DataReceived += Port_DataReceived;
             externalHandler = OnDataReceived;
             port.DtrEnable = true;
+            port.RtsEnable = true;
+            
+            Thread t = new Thread(() =>
+            {
+                while (port.IsOpen)
+                {
+                    string data = port.ReadLine();
+                    ProcessData(data);
+                }
+            });
+            t.Start();
+            
         }
 
         private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -36,8 +49,14 @@ namespace CanSatInterface
             switch(e.EventType)
             {
                 case SerialData.Chars:
-                    string data = port.ReadLine();
-                    ProcessData(data);
+                    while (port.BytesToRead > 0)
+                    {
+                        string data = port.ReadLine();
+                        ProcessData(data);
+                    }
+                    break;
+                default:
+                    Debug.WriteLine("Error!");
                     break;
             }
         }

@@ -2,6 +2,7 @@ using OpenTK.Graphics.OpenGL4;
 using ScottPlot;
 using ScottPlot.Panels;
 using ScottPlot.Plottables;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Net;
 using System.Text;
@@ -15,18 +16,31 @@ namespace GroundStationUI
         private void SendGPSLocation(CanSatInterface.GPSCoordinates gps)
         {
             // log coordinates in a new thread
-            Thread t = new Thread(() =>
+            Thread t = new Thread(async () =>
             {
-                using (WebClient client = new WebClient())
+                try
                 {
-                    var p = new System.Collections.Specialized.NameValueCollection();
-                    p.Add("cmd", "SET_LOCATION");
-                    p.Add("key", "__C4nSaT__");
-                    p.Add("lat", gps.Latitude.ToString());
-                    p.Add("lng", gps.Longitude.ToString());
 
-                    byte[] responsebytes = client.UploadValues("https://tools.withcode.uk/cansat/api.php", "POST", p);
-                    string responsebody = Encoding.UTF8.GetString(responsebytes);
+
+                    HttpClient client = new HttpClient();
+                    client.Timeout = TimeSpan.FromSeconds(5);
+                    var content = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("cmd", "SET_LOCATION"),
+                        new KeyValuePair<string, string>("key", "__C4nSaT__"),
+                        new KeyValuePair<string, string>("lat", gps.Latitude.ToString()),
+                        new KeyValuePair<string, string>("lng", gps.Longitude.ToString()),
+                    });
+                    var response = await client.PostAsync("https://tools.withcode.uk/cansat/api.php", content);
+                    response.EnsureSuccessStatusCode();
+
+                } catch (Exception e)
+                {
+                    lstLog.Invoke(() =>
+                    {
+                        lstLog.Items.Add("Error reporting GPS: " + e.Message);
+                    });
+                    
                 }
             });
             t.Start();
@@ -207,7 +221,7 @@ namespace GroundStationUI
                     {
                         double[] a = new double[3];
                         CanSatInterface.GPSCoordinates gps = new CanSatInterface.GPSCoordinates();
-                        
+                        Debug.WriteLine(data);
                         lstLog.Invoke((Delegate)(() =>
                         {
                             try
