@@ -14,18 +14,23 @@ namespace GroundStationUI
 
         private void SendGPSLocation(CanSatInterface.GPSCoordinates gps)
         {
-            using (WebClient client = new WebClient())
+            // log coordinates in a new thread
+            Thread t = new Thread(() =>
             {
-                var p = new System.Collections.Specialized.NameValueCollection();
-                p.Add("cmd", "SET_LOCATION");
-                p.Add("key", "__C4nSaT__");
-                p.Add("lat", gps.Latitude.ToString());
-                p.Add("lng", gps.Longitude.ToString());
+                using (WebClient client = new WebClient())
+                {
+                    var p = new System.Collections.Specialized.NameValueCollection();
+                    p.Add("cmd", "SET_LOCATION");
+                    p.Add("key", "__C4nSaT__");
+                    p.Add("lat", gps.Latitude.ToString());
+                    p.Add("lng", gps.Longitude.ToString());
 
-                /// TODO: async request should fix it
-                //byte[] responsebytes = client.UploadValues("https://tools.withcode.uk/cansat/api.php", "POST", p);
-                //string responsebody = Encoding.UTF8.GetString(responsebytes);
-            }
+                    byte[] responsebytes = client.UploadValues("https://tools.withcode.uk/cansat/api.php", "POST", p);
+                    string responsebody = Encoding.UTF8.GetString(responsebytes);
+                }
+            });
+            t.Start();
+            
 
         }
 
