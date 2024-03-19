@@ -52,6 +52,12 @@
             lblAltitude = new Label();
             lblAcceleration = new Label();
             lblMagneticField = new Label();
+            label7 = new Label();
+            label8 = new Label();
+            lblGpsLock = new Label();
+            lblRSSI = new Label();
+            label10 = new Label();
+            lblRemoteRecording = new Label();
             tabGraphs = new TabControl();
             tabTemperature = new TabPage();
             tabBattery = new TabPage();
@@ -194,9 +200,9 @@
             // 
             groupLiveView.Controls.Add(tblLiveView);
             groupLiveView.Dock = DockStyle.Right;
-            groupLiveView.Location = new Point(817, 24);
+            groupLiveView.Location = new Point(751, 24);
             groupLiveView.Name = "groupLiveView";
-            groupLiveView.Size = new Size(251, 363);
+            groupLiveView.Size = new Size(317, 363);
             groupLiveView.TabIndex = 3;
             groupLiveView.TabStop = false;
             groupLiveView.Text = "Live View:";
@@ -204,8 +210,8 @@
             // tblLiveView
             // 
             tblLiveView.ColumnCount = 2;
-            tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.76206F));
+            tblLiveView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 66.2379456F));
             tblLiveView.Controls.Add(label6, 0, 5);
             tblLiveView.Controls.Add(label5, 0, 4);
             tblLiveView.Controls.Add(label4, 0, 3);
@@ -218,17 +224,28 @@
             tblLiveView.Controls.Add(lblAltitude, 1, 2);
             tblLiveView.Controls.Add(lblAcceleration, 1, 4);
             tblLiveView.Controls.Add(lblMagneticField, 1, 5);
+            tblLiveView.Controls.Add(label7, 0, 6);
+            tblLiveView.Controls.Add(label8, 0, 7);
+            tblLiveView.Controls.Add(lblGpsLock, 1, 6);
+            tblLiveView.Controls.Add(lblRSSI, 1, 7);
+            tblLiveView.Controls.Add(label10, 0, 9);
+            tblLiveView.Controls.Add(lblRemoteRecording, 1, 9);
             tblLiveView.Dock = DockStyle.Fill;
             tblLiveView.Location = new Point(3, 19);
             tblLiveView.Name = "tblLiveView";
-            tblLiveView.RowCount = 6;
+            tblLiveView.RowCount = 11;
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle());
             tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tblLiveView.Size = new Size(245, 341);
+            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tblLiveView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tblLiveView.Size = new Size(311, 341);
             tblLiveView.TabIndex = 0;
             // 
             // label6
@@ -279,7 +296,7 @@
             // lblTemperature
             // 
             lblTemperature.AutoSize = true;
-            lblTemperature.Location = new Point(125, 0);
+            lblTemperature.Location = new Point(108, 0);
             lblTemperature.Name = "lblTemperature";
             lblTemperature.Size = new Size(45, 15);
             lblTemperature.TabIndex = 1;
@@ -297,7 +314,7 @@
             // lblPressure
             // 
             lblPressure.AutoSize = true;
-            lblPressure.Location = new Point(125, 15);
+            lblPressure.Location = new Point(108, 15);
             lblPressure.Name = "lblPressure";
             lblPressure.Size = new Size(45, 15);
             lblPressure.TabIndex = 2;
@@ -306,7 +323,7 @@
             // lblBatteryVoltage
             // 
             lblBatteryVoltage.AutoSize = true;
-            lblBatteryVoltage.Location = new Point(125, 45);
+            lblBatteryVoltage.Location = new Point(108, 45);
             lblBatteryVoltage.Name = "lblBatteryVoltage";
             lblBatteryVoltage.Size = new Size(45, 15);
             lblBatteryVoltage.TabIndex = 7;
@@ -315,7 +332,7 @@
             // lblAltitude
             // 
             lblAltitude.AutoSize = true;
-            lblAltitude.Location = new Point(125, 30);
+            lblAltitude.Location = new Point(108, 30);
             lblAltitude.Name = "lblAltitude";
             lblAltitude.Size = new Size(45, 15);
             lblAltitude.TabIndex = 4;
@@ -324,7 +341,7 @@
             // lblAcceleration
             // 
             lblAcceleration.AutoSize = true;
-            lblAcceleration.Location = new Point(125, 60);
+            lblAcceleration.Location = new Point(108, 60);
             lblAcceleration.Name = "lblAcceleration";
             lblAcceleration.Size = new Size(45, 15);
             lblAcceleration.TabIndex = 9;
@@ -333,11 +350,65 @@
             // lblMagneticField
             // 
             lblMagneticField.AutoSize = true;
-            lblMagneticField.Location = new Point(125, 80);
+            lblMagneticField.Location = new Point(108, 80);
             lblMagneticField.Name = "lblMagneticField";
             lblMagneticField.Size = new Size(45, 15);
             lblMagneticField.TabIndex = 11;
             lblMagneticField.Text = "Not set";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(3, 100);
+            label7.Name = "label7";
+            label7.Size = new Size(56, 15);
+            label7.TabIndex = 12;
+            label7.Text = "GPS Lock";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(3, 120);
+            label8.Name = "label8";
+            label8.Size = new Size(32, 15);
+            label8.TabIndex = 13;
+            label8.Text = "RSSI ";
+            // 
+            // lblGpsLock
+            // 
+            lblGpsLock.AutoSize = true;
+            lblGpsLock.Location = new Point(108, 100);
+            lblGpsLock.Name = "lblGpsLock";
+            lblGpsLock.Size = new Size(45, 15);
+            lblGpsLock.TabIndex = 14;
+            lblGpsLock.Text = "Not set";
+            // 
+            // lblRSSI
+            // 
+            lblRSSI.AutoSize = true;
+            lblRSSI.Location = new Point(108, 120);
+            lblRSSI.Name = "lblRSSI";
+            lblRSSI.Size = new Size(45, 15);
+            lblRSSI.TabIndex = 15;
+            lblRSSI.Text = "Not set";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(3, 160);
+            label10.Name = "label10";
+            label10.Size = new Size(14, 15);
+            label10.TabIndex = 17;
+            label10.Text = "R";
+            // 
+            // lblRemoteRecording
+            // 
+            lblRemoteRecording.AutoSize = true;
+            lblRemoteRecording.Location = new Point(108, 160);
+            lblRemoteRecording.Name = "lblRemoteRecording";
+            lblRemoteRecording.Size = new Size(45, 15);
+            lblRemoteRecording.TabIndex = 15;
+            lblRemoteRecording.Text = "Not set";
             // 
             // tabGraphs
             // 
@@ -351,7 +422,7 @@
             tabGraphs.Location = new Point(200, 24);
             tabGraphs.Name = "tabGraphs";
             tabGraphs.SelectedIndex = 0;
-            tabGraphs.Size = new Size(617, 363);
+            tabGraphs.Size = new Size(551, 363);
             tabGraphs.TabIndex = 4;
             // 
             // tabTemperature
@@ -359,7 +430,7 @@
             tabTemperature.Location = new Point(4, 24);
             tabTemperature.Name = "tabTemperature";
             tabTemperature.Padding = new Padding(3);
-            tabTemperature.Size = new Size(609, 335);
+            tabTemperature.Size = new Size(543, 335);
             tabTemperature.TabIndex = 0;
             tabTemperature.Text = "Temperature";
             tabTemperature.UseVisualStyleBackColor = true;
@@ -369,7 +440,7 @@
             tabBattery.Location = new Point(4, 24);
             tabBattery.Name = "tabBattery";
             tabBattery.Padding = new Padding(3);
-            tabBattery.Size = new Size(609, 335);
+            tabBattery.Size = new Size(543, 335);
             tabBattery.TabIndex = 1;
             tabBattery.Text = "Battery";
             tabBattery.UseVisualStyleBackColor = true;
@@ -379,7 +450,7 @@
             tabPressureAndAltityde.Location = new Point(4, 24);
             tabPressureAndAltityde.Name = "tabPressureAndAltityde";
             tabPressureAndAltityde.Padding = new Padding(3);
-            tabPressureAndAltityde.Size = new Size(609, 335);
+            tabPressureAndAltityde.Size = new Size(543, 335);
             tabPressureAndAltityde.TabIndex = 2;
             tabPressureAndAltityde.Text = "Pressure and altitude";
             tabPressureAndAltityde.UseVisualStyleBackColor = true;
@@ -389,7 +460,7 @@
             tabAcceleration.Location = new Point(4, 24);
             tabAcceleration.Name = "tabAcceleration";
             tabAcceleration.Padding = new Padding(3);
-            tabAcceleration.Size = new Size(609, 335);
+            tabAcceleration.Size = new Size(543, 335);
             tabAcceleration.TabIndex = 3;
             tabAcceleration.Text = "Acceleration";
             tabAcceleration.UseVisualStyleBackColor = true;
@@ -399,7 +470,7 @@
             tabMagneticField.Location = new Point(4, 24);
             tabMagneticField.Name = "tabMagneticField";
             tabMagneticField.Padding = new Padding(3);
-            tabMagneticField.Size = new Size(609, 335);
+            tabMagneticField.Size = new Size(543, 335);
             tabMagneticField.TabIndex = 4;
             tabMagneticField.Text = "Magnetic field";
             tabMagneticField.UseVisualStyleBackColor = true;
@@ -410,7 +481,7 @@
             tabMap.Location = new Point(4, 24);
             tabMap.Name = "tabMap";
             tabMap.Padding = new Padding(3);
-            tabMap.Size = new Size(609, 335);
+            tabMap.Size = new Size(543, 335);
             tabMap.TabIndex = 5;
             tabMap.Text = "Map";
             tabMap.UseVisualStyleBackColor = true;
@@ -518,10 +589,6 @@
             // 
             printDialog1.UseEXDialog = true;
             // 
-            // folderBrowserDialog1
-            // 
-            folderBrowserDialog1.HelpRequest += folderBrowserDialog1_HelpRequest;
-            // 
             // GroundStation
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -601,5 +668,11 @@
         private PrintDialog printDialog1;
         private FolderBrowserDialog folderBrowserDialog1;
         private Button btnOpenWeb;
+        private Label label7;
+        private Label label8;
+        private Label lblGpsLock;
+        private Label lblRSSI;
+        private Label label10;
+        private Label lblRemoteRecording;
     }
 }

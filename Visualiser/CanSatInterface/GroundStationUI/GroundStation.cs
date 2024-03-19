@@ -1,3 +1,4 @@
+using CanSatInterface;
 using OpenTK.Graphics.OpenGL4;
 using ScottPlot;
 using ScottPlot.Panels;
@@ -34,17 +35,18 @@ namespace GroundStationUI
                     var response = await client.PostAsync("https://tools.withcode.uk/cansat/api.php", content);
                     response.EnsureSuccessStatusCode();
 
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     lstLog.Invoke(() =>
                     {
                         lstLog.Items.Add("Error reporting GPS: " + e.Message);
                     });
-                    
+
                 }
             });
             t.Start();
-            
+
 
         }
 
@@ -232,10 +234,16 @@ namespace GroundStationUI
                                 {
                                     case CanSatInterface.CanSatInterface.DataLabel.GPSLatitude:
                                         gps = device.getGPSLocation();
+                                        lblGpsLock.Text = $"Lat: {gps.Latitude} Lng: {gps.Longitude}";
                                         SendGPSLocation(gps);
+                                        break;
+
+                                    case CanSatInterface.CanSatInterface.DataLabel.RecordingRemotely:
+                                        lblRemoteRecording.Text = device.getRecordingStatus()? "On" : "Off";
                                         break;
                                     case CanSatInterface.CanSatInterface.DataLabel.GPSLongitude:
                                         gps = device.getGPSLocation();
+                                        lblGpsLock.Text = $"Lat: {gps.Latitude} Lng: {gps.Longitude}";
                                         SendGPSLocation(gps);
                                         break;
 
@@ -244,6 +252,10 @@ namespace GroundStationUI
                                         accelerationXLogger.Add(time, a[0]);
                                         lblAcceleration.Text = $"{a[0]:f2}, {a[1]:f2}, {a[2]:f2} m/s²";
                                         accelerationPlot.Refresh();
+                                        break;
+
+                                    case CanSatInterface.CanSatInterface.DataLabel.RSSI:
+                                        lblRSSI.Text = $"{device.getSignalStrength()} dB";
                                         break;
 
                                     case CanSatInterface.CanSatInterface.DataLabel.AccelerationY:
@@ -302,6 +314,7 @@ namespace GroundStationUI
                                         pressureAndAltitudePlot.Refresh();
                                         break;
 
+
                                     case CanSatInterface.CanSatInterface.DataLabel.BatteryVoltage:
                                         double voltage = device.getBatteryVoltage();
                                         lblBatteryVoltage.Text = $"{voltage:f2}v";
@@ -318,7 +331,7 @@ namespace GroundStationUI
                             }
                         }));
 
-                        
+
                     });
                 }
             }
@@ -413,15 +426,11 @@ namespace GroundStationUI
             }
         }
 
-        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnOpenWeb_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("explorer", "https://tools.withcode.uk/cansat");
         }
 
+     
     }
 }

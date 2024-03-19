@@ -40,15 +40,20 @@ namespace CanSatInterface
             MagneticFieldStrengthX,
             MagneticFieldStrengthY,
             MagneticFieldStrengthZ,
+            RSSI,
             Unknown
         }
+
+        
 
         protected Dictionary<string, double> Values = new Dictionary<string, double>()
         {
             // general
             { "T", 0 }, // time (s)
             { "R", 0 }, // recording remotely
+            { "L", 0 }, // recording locally
             { "P", 0 }, // packet number
+            { "RSSI", -160 }, // RSSI 
             
             // battery
             { "Char", 0}, // battery is charging
@@ -87,12 +92,22 @@ namespace CanSatInterface
             return gps;
         }
 
+        public bool getRecordingStatus()
+        {
+            return Values["R"] > 0;
+        }
+
         public void ShowValues()
         {
             foreach (string k in Values.Keys)
             {
                 Console.WriteLine($"{k}: {Values[k]}");
             }
+        }
+
+        public double getSignalStrength()
+        {
+            return Values["RSSI"];
         }
 
         protected DataLabel ProcessData(string data)
@@ -115,6 +130,9 @@ namespace CanSatInterface
                         break;
                     case "P":
                         lastUpdated = DataLabel.PacketNumber;
+                        break;
+                    case "RSSI":
+                        lastUpdated = DataLabel.RSSI;
                         break;
 
                     // battery

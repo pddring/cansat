@@ -23,7 +23,6 @@ namespace CanSatInterface
             port = new SerialPort(PortName, 115200, Parity.None, 8);
         }
 
-
         public override void Connect(ProcessData OnDataReceived)
         {
             port.Open();
