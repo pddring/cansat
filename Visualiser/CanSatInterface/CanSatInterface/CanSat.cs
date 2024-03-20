@@ -35,8 +35,16 @@ namespace CanSatInterface
             {
                 while (port.IsOpen)
                 {
-                    string data = port.ReadLine();
-                    ProcessData(data);
+                    try
+                    {
+                        string data = port.ReadLine();
+                        ProcessData(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        port.Close();
+                    }
+                    
                 }
             });
             t.Start();

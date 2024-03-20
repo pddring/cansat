@@ -36,9 +36,14 @@ class LogWriter:
             self.files[file].write("\n")
             if self.debug: print("Writing to", file)
             for col in self.columns[file]:
-                val = "{},".format(values[col])
-                if self.debug: print(val)
-                self.files[file].write(val)
+                if col in values:
+                    val = "{},".format(values[col])
+                    if self.debug: print(val)
+                    self.files[file].write(val)
+                else:
+                    if self.debug: print("Missing column: " + col)
+                
+                
 
     
     def start(self):
